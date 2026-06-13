@@ -1,0 +1,43 @@
+{
+  "name": "mcp-server-lighthouse",
+  "version": "0.1.0",
+  "description": "An MCP server for running Google Lighthouse audits against public websites.",
+  "type": "module",
+  "bin": {
+    "mcp-server-lighthouse": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "lighthouse",
+    "performance",
+    "accessibility",
+    "seo"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.29.0",
+    "chrome-launcher": "1.2.1",
+    "ipaddr.js": "2.2.0",
+    "lighthouse": "12.8.2"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.21",
+    "typescript": "6.0.3",
+    "vitest": "4.1.8"
+  }
+}
