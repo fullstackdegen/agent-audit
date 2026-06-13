@@ -6,18 +6,27 @@ import {
   McpError,
 } from "@modelcontextprotocol/sdk/types.js";
 
-import { auditWebsite as runLighthouseAudit } from "./audit.js";
+import {
+  auditWebsite as runLighthouseAudit,
+  type AuditWebsite,
+} from "./audit.js";
+import { renderReportMarkdown } from "./markdown.js";
+import {
+  lighthouseReportOutputSchema,
+  lighthouseToolInputSchema,
+  parseAuditMode,
+} from "./report-schema.js";
 import { assertPublicHttpUrl } from "./url-policy.js";
 
 export interface LighthouseServerDependencies {
-  auditWebsite?: (url: URL) => Promise<string>;
+  auditWebsite?: AuditWebsite;
   validateUrl?: (input: unknown) => Promise<URL>;
 }
 
 const TOOL_NAME = "analyze_website_performance";
 
 /**
- * Creates an MCP server with an injectable audit boundary for deterministic tests.
+ * Creates the Lighthouse MCP server and its schema-validated tool contract.
  */
 export function createLighthouseServer(
   dependencies: LighthouseServerDependencies = {},
@@ -41,19 +50,9 @@ export function createLighthouseServer(
       {
         name: TOOL_NAME,
         description:
-          "Runs Google Lighthouse against a public URL and reports Performance, Accessibility, Best Practices, and SEO diagnostics.",
-        inputSchema: {
-          type: "object",
-          additionalProperties: false,
-          properties: {
-            url: {
-              type: "string",
-              description:
-                "A fully qualified public HTTP or HTTPS URL, for example https://example.com.",
-            },
-          },
-          required: ["url"],
-        },
+          "Runs reliable mobile and desktop Lighthouse audits and returns an implementation-ready structured report with equivalent Markdown.",
+        inputSchema: lighthouseToolInputSchema,
+        outputSchema: lighthouseReportOutputSchema,
       },
     ],
   }));
@@ -66,12 +65,17 @@ export function createLighthouseServer(
       );
     }
 
-    try {
-      const url = await validateUrl(request.params.arguments?.url);
-      const report = await auditWebsite(url);
+    const mode = parseModeOrThrow(request.params.arguments?.mode);
+    const url = await validateUrlOrThrow(
+      request.params.arguments?.url,
+      validateUrl,
+    );
 
+    try {
+      const report = await auditWebsite(url, mode);
       return {
-        content: [{ type: "text", text: report }],
+        content: [{ type: "text", text: renderReportMarkdown(report) }],
+        structuredContent: report as unknown as Record<string, unknown>,
       };
     } catch (error) {
       return {
@@ -84,10 +88,29 @@ export function createLighthouseServer(
   return server;
 }
 
-function toSafeErrorMessage(error: unknown): string {
-  if (error instanceof Error) {
-    return `Lighthouse audit failed: ${error.message}`;
+function parseModeOrThrow(input: unknown) {
+  try {
+    return parseAuditMode(input);
+  } catch (error) {
+    throw new McpError(ErrorCode.InvalidParams, errorMessage(error));
   }
+}
 
-  return "Lighthouse audit failed due to an unknown error.";
+async function validateUrlOrThrow(
+  input: unknown,
+  validateUrl: (input: unknown) => Promise<URL>,
+): Promise<URL> {
+  try {
+    return await validateUrl(input);
+  } catch (error) {
+    throw new McpError(ErrorCode.InvalidParams, errorMessage(error));
+  }
+}
+
+function toSafeErrorMessage(error: unknown): string {
+  return `Lighthouse audit failed: ${errorMessage(error)}`;
+}
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : "Unknown error.";
 }
