@@ -26,4 +26,24 @@ describe("recommendations", () => {
     );
     expect(result.documentationUrl).toBeNull();
   });
+
+  it.each([
+    [
+      "network-dependency-tree-insight",
+      /critical request chains/i,
+      /dependency chain/i,
+    ],
+    ["robots-txt", /robots\.txt/i, /valid robots\.txt/i],
+  ])(
+    "returns actionable guidance for %s",
+    (auditId, actionPattern, criterionPattern) => {
+      const result = getRecommendation(auditId, "mobile");
+
+      expect(result.suggestedActions.join(" ")).toMatch(actionPattern);
+      expect(result.acceptanceCriteria.join(" ")).toMatch(criterionPattern);
+      expect(result.documentationUrl).toMatch(
+        /^https:\/\/developer\.chrome\.com\//,
+      );
+    },
+  );
 });

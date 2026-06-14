@@ -89,10 +89,13 @@ The successful MCP response contains:
 - `structuredContent`: canonical JSON for automation and coding agents.
 - `content`: Markdown generated from the same canonical report.
 
-The report contains at most 20 prioritized issues and 10 evidence rows per
-issue. Findings with the same Lighthouse audit ID are merged across profiles.
-Page-controlled text is sanitized and kept separate from server-owned agent
-instructions.
+The report contains at most 10 prioritized issues and 10 evidence rows per
+issue. Equivalent Lighthouse audits are merged under canonical task IDs across
+profiles, while duplicate resource evidence keeps the highest measured impact.
+Raw metric audits remain in the profile metrics instead of becoming coding
+tasks. Findings without actionable evidence or a deterministic recommendation
+are omitted from the backlog. Page-controlled text is sanitized and kept
+separate from server-owned agent instructions.
 
 If only one profile produces enough successful runs, the report has
 `status: "incomplete"`. It remains useful for diagnosis but must not be treated
@@ -149,8 +152,8 @@ npm run build
 Run an opt-in real Chrome smoke audit:
 
 ```bash
-npm run smoke -- https://example.com fast
-npm run smoke -- https://example.com reliable
+npm run --silent smoke -- https://example.com fast
+npm run --silent smoke -- https://example.com reliable
 ```
 
 The smoke command writes canonical JSON to stdout and Markdown to stderr.

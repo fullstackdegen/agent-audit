@@ -28,6 +28,15 @@ const CATALOG: Record<string, CatalogEntry> = {
     ["Eliminate render-blocking resources from the critical rendering path."],
     "https://developer.chrome.com/docs/lighthouse/performance/render-blocking-resources/",
   ),
+  "network-dependency-tree-insight": entry(
+    [
+      "Shorten critical request chains, defer non-critical dependencies, and keep preconnect hints limited to required origins.",
+    ],
+    [
+      "Reduce the longest critical dependency chain and remove unnecessary preconnect hints reported by Lighthouse.",
+    ],
+    "https://developer.chrome.com/docs/lighthouse/performance/critical-request-chains/",
+  ),
   "uses-responsive-images": entry(
     ["Serve images sized for their rendered dimensions and viewport."],
     ["Eliminate responsive-image byte savings reported by Lighthouse."],
@@ -128,6 +137,15 @@ const CATALOG: Record<string, CatalogEntry> = {
     ["The Lighthouse meta-description audit passes."],
     "https://developer.chrome.com/docs/lighthouse/seo/meta-description/",
   ),
+  "robots-txt": entry(
+    [
+      "Fix robots.txt syntax errors, remove unsupported directives, and serve the file as plain text with an HTTP 200 response.",
+    ],
+    [
+      "Serve a valid robots.txt file that passes the Lighthouse robots-txt audit.",
+    ],
+    "https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/",
+  ),
   "html-has-lang": entry(
     ["Set the document language with a valid lang attribute on the html element."],
     ["The Lighthouse html-has-lang audit passes."],
@@ -147,6 +165,11 @@ const CATALOG: Record<string, CatalogEntry> = {
     ["Replace generic link labels with text that describes the destination or action."],
     ["The Lighthouse link-text audit passes."],
     "https://developer.chrome.com/docs/lighthouse/seo/link-text/",
+  ),
+  "legacy-javascript": entry(
+    ["Adjust the JavaScript build target to avoid unnecessary legacy transforms and polyfills for supported browsers."],
+    ["Reduce the legacy JavaScript bytes reported by Lighthouse."],
+    "https://developer.chrome.com/docs/lighthouse/performance/legacy-javascript/",
   ),
 };
 
@@ -190,6 +213,10 @@ export function getRecommendation(
     acceptanceCriteria: [...catalogEntry.criteria, ...profileCriteria],
     documentationUrl: catalogEntry.documentationUrl,
   };
+}
+
+export function hasRecommendation(auditId: string): boolean {
+  return auditId in CATALOG;
 }
 
 function entry(

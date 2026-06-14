@@ -1,4 +1,7 @@
-import { getRecommendation } from "./recommendations.js";
+import {
+  getRecommendation,
+  hasRecommendation,
+} from "./recommendations.js";
 import type {
   CategoryName,
   FindingProfileData,
@@ -49,6 +52,20 @@ const CATEGORY_ORDER: CategoryName[] = [
   "seo",
 ];
 const SEVERITY_ORDER: Severity[] = ["critical", "high", "medium", "low"];
+const AUDIT_ALIASES: Record<string, string> = {
+  "legacy-javascript-insight": "legacy-javascript",
+  "render-blocking-insight": "render-blocking-resources",
+};
+const METRIC_AUDITS = new Set([
+  "first-contentful-paint",
+  "speed-index",
+  "largest-contentful-paint",
+  "total-blocking-time",
+  "cumulative-layout-shift",
+  "interactive",
+  "max-potential-fid",
+]);
+const SECURITY_CRITICAL_AUDITS = new Set(["is-on-https"]);
 
 export function extractProfileFindings(
   profile: ProfileName,
@@ -60,13 +77,18 @@ export function extractProfileFindings(
 
   for (const [auditId, audit] of Object.entries(result.audits)) {
     const category = membership.get(auditId);
-    if (!category || !isActionable(audit)) {
+    const canonicalAuditId = canonicalizeAuditId(auditId);
+    const evidence = extractEvidence(audit.details);
+    if (
+      !category ||
+      !isActionable(audit) ||
+      !isEligibleTask(canonicalAuditId, audit, evidence)
+    ) {
       continue;
     }
 
-    const evidence = extractEvidence(audit.details);
     findings.push({
-      auditId,
+      auditId: canonicalAuditId,
       category,
       severity: deriveSeverity(audit, category, evidence),
       profile,
@@ -119,7 +141,10 @@ export function mergeAndPrioritizeFindings(
       continue;
     }
 
-    existing.profiles[finding.profile] = finding.profileData;
+    existing.profiles[finding.profile] = mergeProfileData(
+      existing.profiles[finding.profile],
+      finding.profileData,
+    );
     if (!existing.affectedProfiles.includes(finding.profile)) {
       existing.affectedProfiles.push(finding.profile);
       existing.affectedProfiles.sort(
@@ -145,7 +170,7 @@ export function mergeAndPrioritizeFindings(
 
   return [...merged.values()]
     .sort(compareIssues)
-    .slice(0, 20);
+    .slice(0, 10);
 }
 
 export function sanitizeText(value: unknown, maxLength: number): string {
@@ -174,11 +199,22 @@ function extractEvidence(
       continue;
     }
     const node = isRecord(rawItem.node) ? rawItem.node : undefined;
+    const sourceLocation = isRecord(rawItem.sourceLocation)
+      ? rawItem.sourceLocation
+      : undefined;
     const row: ReportEvidence = {
-      url: sanitizeNullableText(rawItem.url ?? rawItem.href, 500),
+      url: sanitizeNullableText(
+        rawItem.url ?? rawItem.href ?? sourceLocation?.url,
+        500,
+      ),
       selector: sanitizeNullableText(node?.selector ?? rawItem.selector, 300),
       snippet: sanitizeNullableText(
-        node?.snippet ?? rawItem.snippet ?? rawItem.text,
+        node?.snippet ??
+          rawItem.snippet ??
+          rawItem.text ??
+          rawItem.description ??
+          rawItem.failureReason ??
+          rawItem.source,
         500,
       ),
       totalBytes: finiteOrNull(rawItem.totalBytes),
@@ -220,6 +256,21 @@ function isActionable(audit: LighthouseAuditLike): boolean {
   return savings || (typeof audit.score === "number" && audit.score < 1);
 }
 
+function isEligibleTask(
+  auditId: string,
+  audit: LighthouseAuditLike,
+  evidence: ReportEvidence[],
+): boolean {
+  if (METRIC_AUDITS.has(auditId)) {
+    return false;
+  }
+  const diagnostic =
+    auditId.endsWith("-insight") ||
+    audit.scoreDisplayMode === "informative" ||
+    audit.details?.type === "debugdata";
+  return !diagnostic || evidence.length > 0 || hasRecommendation(auditId);
+}
+
 function deriveSeverity(
   audit: LighthouseAuditLike,
   category: CategoryName,
@@ -227,13 +278,18 @@ function deriveSeverity(
 ): Severity {
   const score = audit.score;
   const savingsMs = audit.details?.overallSavingsMs ?? 0;
-  if (score === 0) {
+  if (
+    SECURITY_CRITICAL_AUDITS.has(audit.id ?? "") ||
+    savingsMs > 1000 ||
+    (category === "accessibility" && evidence.some((row) => row.selector))
+  ) {
     return "critical";
   }
   if (
+    score === 0 ||
     (typeof score === "number" && score < 0.5) ||
     savingsMs > 500 ||
-    (category === "accessibility" && evidence.length > 0)
+    (audit.details?.overallSavingsBytes ?? 0) > 50 * 1024
   ) {
     return "high";
   }
@@ -332,4 +388,75 @@ function unique(values: string[]): string[] {
 
 function categoryScoreCriterion(category: CategoryName): string {
   return `Raise the median ${category} score to at least 90/100.`;
+}
+
+function canonicalizeAuditId(auditId: string): string {
+  return AUDIT_ALIASES[auditId] ?? auditId;
+}
+
+function mergeProfileData(
+  existing: FindingProfileData | undefined,
+  incoming: FindingProfileData,
+): FindingProfileData {
+  if (!existing) {
+    return incoming;
+  }
+  return {
+    score: minNullable(existing.score, incoming.score),
+    displayValue: incoming.displayValue ?? existing.displayValue,
+    impact: {
+      estimatedSavingsMs: maxNullable(
+        existing.impact.estimatedSavingsMs,
+        incoming.impact.estimatedSavingsMs,
+      ),
+      estimatedSavingsBytes: maxNullable(
+        existing.impact.estimatedSavingsBytes,
+        incoming.impact.estimatedSavingsBytes,
+      ),
+    },
+    evidence: deduplicateEvidence([
+      ...existing.evidence,
+      ...incoming.evidence,
+    ]),
+  };
+}
+
+function deduplicateEvidence(evidence: ReportEvidence[]): ReportEvidence[] {
+  const merged = new Map<string, ReportEvidence>();
+  for (const row of evidence) {
+    const key = JSON.stringify([row.url, row.selector, row.snippet]);
+    const existing = merged.get(key);
+    merged.set(
+      key,
+      existing
+        ? {
+            url: row.url ?? existing.url,
+            selector: row.selector ?? existing.selector,
+            snippet: row.snippet ?? existing.snippet,
+            totalBytes: maxNullable(existing.totalBytes, row.totalBytes),
+            wastedBytes: maxNullable(existing.wastedBytes, row.wastedBytes),
+            wastedMs: maxNullable(existing.wastedMs, row.wastedMs),
+          }
+        : row,
+    );
+  }
+  return [...merged.values()].slice(0, 10);
+}
+
+function maxNullable(
+  left: number | null,
+  right: number | null,
+): number | null {
+  if (left == null) return right;
+  if (right == null) return left;
+  return Math.max(left, right);
+}
+
+function minNullable(
+  left: number | null,
+  right: number | null,
+): number | null {
+  if (left == null) return right;
+  if (right == null) return left;
+  return Math.min(left, right);
 }

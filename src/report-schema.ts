@@ -326,7 +326,7 @@ export const lighthouseReportOutputSchema = {
     },
     prioritizedIssues: {
       type: "array",
-      maxItems: 20,
+      maxItems: 10,
       items: {
         type: "object",
         additionalProperties: false,

@@ -20,6 +20,9 @@ describe("report contract", () => {
     expect(lighthouseReportOutputSchema.additionalProperties).toBe(false);
     expect(lighthouseReportOutputSchema.required).toContain("profiles");
     expect(lighthouseReportOutputSchema.required).toContain("prioritizedIssues");
+    expect(
+      lighthouseReportOutputSchema.properties.prioritizedIssues.maxItems,
+    ).toBe(10);
     expect(AGENT_INSTRUCTIONS).toHaveLength(9);
   });
 });
