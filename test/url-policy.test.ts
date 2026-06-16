@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { assertPublicHttpUrl, parsePublicHttpUrl } from "../src/url-policy.js";
+import {
+  assertAuditTargetUrl,
+  assertPublicHttpUrl,
+  isLocalhostAllowedFromEnv,
+  parseAuditTargetUrl,
+  parsePublicHttpUrl,
+} from "../src/url-policy.js";
 
 describe("parsePublicHttpUrl", () => {
   it("accepts a fully qualified public HTTPS URL", () => {
@@ -42,5 +48,46 @@ describe("assertPublicHttpUrl", () => {
     ]);
 
     expect(url.href).toBe("https://example.com/");
+  });
+});
+
+describe("parseAuditTargetUrl", () => {
+  it.each([
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://[::1]:3000",
+    "http://app.localhost:3000",
+  ])("allows localhost target in explicit local mode: %s", (value) => {
+    expect(parseAuditTargetUrl(value, { allowLocalhost: true }).href).toBe(
+      new URL(value).href,
+    );
+  });
+
+  it.each(["http://192.168.1.10", "http://10.0.0.1"])(
+    "still rejects private network target in local mode: %s",
+    (value) => {
+      expect(() =>
+        parseAuditTargetUrl(value, { allowLocalhost: true }),
+      ).toThrow(/publicly routable/i);
+    },
+  );
+
+  it("still rejects hostnames that resolve to private addresses in local mode", async () => {
+    await expect(
+      assertAuditTargetUrl(
+        "https://internal.example",
+        async () => [{ address: "10.0.0.4", family: 4 }],
+        { allowLocalhost: true },
+      ),
+    ).rejects.toThrow(/publicly routable/i);
+  });
+
+  it.each([
+    [{ LIGHTHOUSE_MCP_ALLOW_LOCALHOST: "true" }, true],
+    [{ LIGHTHOUSE_MCP_ALLOW_LOCALHOST: "TRUE" }, false],
+    [{ LIGHTHOUSE_MCP_ALLOW_LOCALHOST: "1" }, false],
+    [{}, false],
+  ])("reads localhost mode from env %#", (env, expected) => {
+    expect(isLocalhostAllowedFromEnv(env)).toBe(expected);
   });
 });

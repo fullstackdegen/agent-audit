@@ -9,6 +9,10 @@ export interface ResolvedAddress {
 
 export type ResolveHostname = (hostname: string) => Promise<ResolvedAddress[]>;
 
+export interface UrlPolicyOptions {
+  allowLocalhost?: boolean;
+}
+
 const LOCAL_HOSTNAMES = new Set(["localhost", "localhost.localdomain"]);
 const BLOCKED_RANGES = new Set([
   "unspecified",
@@ -23,11 +27,23 @@ const BLOCKED_RANGES = new Set([
 ]);
 
 /**
+ * Reads the explicit development-mode localhost opt-in.
+ */
+export function isLocalhostAllowedFromEnv(
+  env: Record<string, string | undefined> = process.env,
+): boolean {
+  return env.LIGHTHOUSE_MCP_ALLOW_LOCALHOST === "true";
+}
+
+/**
  * Parses a user-supplied audit target and rejects obviously unsafe URL forms.
  *
- * DNS-backed policy checks are performed separately by {@link assertPublicHttpUrl}.
+ * DNS-backed policy checks are performed separately by {@link assertAuditTargetUrl}.
  */
-export function parsePublicHttpUrl(input: unknown): URL {
+export function parseAuditTargetUrl(
+  input: unknown,
+  options: UrlPolicyOptions = {},
+): URL {
   if (typeof input !== "string" || input.trim() === "") {
     throw new Error("The url argument must be a non-empty string.");
   }
@@ -48,15 +64,31 @@ export function parsePublicHttpUrl(input: unknown): URL {
   }
 
   const hostname = normalizeHostname(url.hostname);
-  if (!hostname || LOCAL_HOSTNAMES.has(hostname) || hostname.endsWith(".localhost")) {
-    throw new Error("Localhost targets are not allowed.");
+  if (!hostname) {
+    throw new Error("The url argument must include a hostname.");
   }
 
   if (ipaddr.isValid(hostname)) {
-    assertPublicAddress(hostname);
+    if (isLoopbackAddress(hostname)) {
+      assertLocalhostAllowed(options);
+    } else {
+      assertPublicAddress(hostname);
+    }
+    return url;
+  }
+
+  if (isLocalHostname(hostname)) {
+    assertLocalhostAllowed(options);
   }
 
   return url;
+}
+
+/**
+ * Parses a public target URL with the default production policy.
+ */
+export function parsePublicHttpUrl(input: unknown): URL {
+  return parseAuditTargetUrl(input);
 }
 
 /**
@@ -65,12 +97,20 @@ export function parsePublicHttpUrl(input: unknown): URL {
  * Call this immediately before browser navigation. Production deployments should
  * also enforce outbound network restrictions to mitigate DNS rebinding.
  */
-export async function assertPublicHttpUrl(
+export async function assertAuditTargetUrl(
   input: unknown,
   resolveHostname: ResolveHostname = resolveAllAddresses,
+  options: UrlPolicyOptions = {
+    allowLocalhost: isLocalhostAllowedFromEnv(),
+  },
 ): Promise<URL> {
-  const url = parsePublicHttpUrl(input);
+  const url = parseAuditTargetUrl(input, options);
   const hostname = normalizeHostname(url.hostname);
+
+  if (isLocalHostname(hostname) || isLoopbackAddress(hostname)) {
+    assertLocalhostAllowed(options);
+    return url;
+  }
 
   if (ipaddr.isValid(hostname)) {
     return url;
@@ -94,12 +134,38 @@ export async function assertPublicHttpUrl(
   return url;
 }
 
+/**
+ * Resolves a target hostname and verifies that every result is publicly routable.
+ */
+export async function assertPublicHttpUrl(
+  input: unknown,
+  resolveHostname: ResolveHostname = resolveAllAddresses,
+): Promise<URL> {
+  return assertAuditTargetUrl(input, resolveHostname);
+}
+
 async function resolveAllAddresses(hostname: string): Promise<ResolvedAddress[]> {
   return lookup(hostname, { all: true, verbatim: true });
 }
 
 function normalizeHostname(hostname: string): string {
   return hostname.replace(/^\[|\]$/g, "").toLowerCase();
+}
+
+function isLocalHostname(hostname: string): boolean {
+  return LOCAL_HOSTNAMES.has(hostname) || hostname.endsWith(".localhost");
+}
+
+function isLoopbackAddress(address: string): boolean {
+  return ipaddr.isValid(address) && ipaddr.process(address).range() === "loopback";
+}
+
+function assertLocalhostAllowed(options: UrlPolicyOptions): void {
+  if (!options.allowLocalhost) {
+    throw new Error(
+      "Localhost targets are disabled by default. Start the server with LIGHTHOUSE_MCP_ALLOW_LOCALHOST=true to audit local development sites.",
+    );
+  }
 }
 
 function assertPublicAddress(address: string): void {
