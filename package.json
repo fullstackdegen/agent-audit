@@ -52,7 +52,7 @@
     "@modelcontextprotocol/sdk": "1.29.0",
     "chrome-launcher": "1.2.1",
     "ipaddr.js": "2.2.0",
-    "lighthouse": "12.8.2"
+    "lighthouse": "12.6.1"
   },
   "devDependencies": {
     "@types/node": "22.19.21",
