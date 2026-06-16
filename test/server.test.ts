@@ -43,6 +43,15 @@ describe("Lighthouse MCP server", () => {
     });
   });
 
+  it("publishes the package version in server metadata", async () => {
+    const client = await connectTestClient();
+
+    expect(client.getServerVersion()).toEqual({
+      name: "mcp-server-lighthouse",
+      version: "0.1.2",
+    });
+  });
+
   it("rejects unknown tool names", async () => {
     const client = await connectTestClient();
 

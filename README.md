@@ -89,7 +89,7 @@ claude mcp add lighthouse -- npx -y mcp-server-lighthouse
 For local development audits, pass the explicit localhost opt-in:
 
 ```bash
-claude mcp add --env LIGHTHOUSE_MCP_ALLOW_LOCALHOST=true --transport stdio lighthouse -- npx -y mcp-server-lighthouse
+claude mcp add lighthouse-local -- npx -y mcp-server-lighthouse --local
 ```
 
 See the [official Claude Code MCP documentation](https://code.claude.com/docs/en/mcp).
@@ -144,7 +144,7 @@ Configure a local stdio MCP server:
 - arguments: `-y`, `mcp-server-lighthouse`
 
 If your Cursor version supports environment variables for MCP servers, add
-`LIGHTHOUSE_MCP_ALLOW_LOCALHOST=true` when you need localhost audits.
+`--local` to the server arguments when you need localhost audits.
 
 ### Other MCP Clients
 
@@ -162,7 +162,7 @@ This is the correct default for hosted agents and shared environments.
 For developer machines, enable explicit localhost auditing:
 
 ```bash
-LIGHTHOUSE_MCP_ALLOW_LOCALHOST=true npx -y mcp-server-lighthouse
+npx -y mcp-server-lighthouse --local
 ```
 
 Then audit the local app through your MCP client:
@@ -178,6 +178,13 @@ The opt-in only allows loopback-style targets such as `localhost`,
 `*.localhost`, `127.0.0.0/8`, and `::1`. Private LAN ranges, link-local
 addresses, multicast/reserved ranges, and cloud metadata addresses remain
 blocked.
+
+The environment variable form remains supported for clients that cannot pass
+extra CLI arguments:
+
+```bash
+LIGHTHOUSE_MCP_ALLOW_LOCALHOST=true npx -y mcp-server-lighthouse
+```
 
 ## Tool
 
@@ -288,9 +295,9 @@ virtual machine provides an equivalent isolation boundary.
 **The target URL is rejected**
 
 Only publicly routable HTTP and HTTPS targets are accepted by default. For a
-local development server, start Lighthouse MCP with
-`LIGHTHOUSE_MCP_ALLOW_LOCALHOST=true` and use a loopback URL such as
-`http://localhost:3000`. Private network addresses remain blocked.
+local development server, start Lighthouse MCP with `--local` and use a
+loopback URL such as `http://localhost:3000`. Private network addresses remain
+blocked.
 
 ## Contributing
 
