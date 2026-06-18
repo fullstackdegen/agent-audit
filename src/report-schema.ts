@@ -1,4 +1,4 @@
-export const REPORT_SCHEMA_VERSION = "1.0" as const;
+export const REPORT_SCHEMA_VERSION = "1.1" as const;
 export const AUDIT_MODES = ["fast", "reliable"] as const;
 export const PROFILE_NAMES = ["mobile", "desktop"] as const;
 export const SEVERITIES = ["critical", "high", "medium", "low"] as const;
@@ -15,6 +15,16 @@ export type Severity = (typeof SEVERITIES)[number];
 export type CategoryName = (typeof CATEGORIES)[number];
 export type ReportStatus = "complete" | "incomplete";
 export type ProfileStatus = "complete" | "incomplete" | "failed";
+export type SiteIntelligenceStatus = "complete" | "incomplete" | "failed";
+export type SiteCheckStatus = "pass" | "warn" | "fail";
+export type SiteCheckCategory =
+  | "broken-links"
+  | "metadata"
+  | "structured-data"
+  | "indexability"
+  | "images"
+  | "assets"
+  | "llms";
 
 export interface NumericDistribution {
   median: number | null;
@@ -54,6 +64,42 @@ export interface PrioritizedIssue {
   suggestedActions: string[];
   acceptanceCriteria: string[];
   documentationUrl: string | null;
+}
+
+export interface FetchSummary {
+  url: string;
+  statusCode: number | null;
+  ok: boolean;
+  contentType: string | null;
+  finalUrl: string;
+  error: string | null;
+}
+
+export interface SiteCheck {
+  id: string;
+  category: SiteCheckCategory;
+  status: SiteCheckStatus;
+  title: string;
+  evidence: ReportEvidence[];
+}
+
+export interface LlmsTxtReport {
+  status: "generated" | "insufficient-content";
+  text: string | null;
+  evidence: string[];
+}
+
+export interface SiteIntelligenceReport {
+  status: SiteIntelligenceStatus;
+  inspectedUrl: string;
+  fetchedResources: {
+    html: FetchSummary;
+    robotsTxt: FetchSummary | null;
+    sitemapXml: FetchSummary | null;
+  };
+  checks: SiteCheck[];
+  llmsTxt: LlmsTxtReport;
+  prioritizedIssues: PrioritizedIssue[];
 }
 
 export interface ProfileReport {
@@ -98,6 +144,7 @@ export interface AgentReadyLighthouseReport {
   };
   profiles: Record<ProfileName, ProfileReport>;
   prioritizedIssues: PrioritizedIssue[];
+  siteIntelligence: SiteIntelligenceReport | null;
   agentInstructions: string[];
 }
 
@@ -199,6 +246,52 @@ const findingProfileSchema = {
   required: ["score", "displayValue", "impact", "evidence"],
 } as const;
 
+const prioritizedIssueSchema = {
+  type: "object",
+  additionalProperties: false,
+  properties: {
+    auditId: { type: "string" },
+    category: { type: "string", enum: CATEGORIES },
+    severity: { type: "string", enum: SEVERITIES },
+    affectedProfiles: {
+      type: "array",
+      uniqueItems: true,
+      items: { type: "string", enum: PROFILE_NAMES },
+    },
+    title: { type: "string" },
+    description: { type: "string" },
+    profiles: {
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        mobile: findingProfileSchema,
+        desktop: findingProfileSchema,
+      },
+    },
+    suggestedActions: {
+      type: "array",
+      items: { type: "string" },
+    },
+    acceptanceCriteria: {
+      type: "array",
+      items: { type: "string" },
+    },
+    documentationUrl: nullableStringSchema,
+  },
+  required: [
+    "auditId",
+    "category",
+    "severity",
+    "affectedProfiles",
+    "title",
+    "description",
+    "profiles",
+    "suggestedActions",
+    "acceptanceCriteria",
+    "documentationUrl",
+  ],
+} as const;
+
 const profileReportSchema = {
   type: "object",
   additionalProperties: false,
@@ -275,6 +368,93 @@ const profileReportSchema = {
   ],
 } as const;
 
+const fetchSummarySchema = {
+  type: "object",
+  additionalProperties: false,
+  properties: {
+    url: { type: "string" },
+    statusCode: nullableNumberSchema,
+    ok: { type: "boolean" },
+    contentType: nullableStringSchema,
+    finalUrl: { type: "string" },
+    error: nullableStringSchema,
+  },
+  required: ["url", "statusCode", "ok", "contentType", "finalUrl", "error"],
+} as const;
+
+const siteCheckSchema = {
+  type: "object",
+  additionalProperties: false,
+  properties: {
+    id: { type: "string" },
+    category: {
+      type: "string",
+      enum: [
+        "broken-links",
+        "metadata",
+        "structured-data",
+        "indexability",
+        "images",
+        "assets",
+        "llms",
+      ],
+    },
+    status: { type: "string", enum: ["pass", "warn", "fail"] },
+    title: { type: "string" },
+    evidence: {
+      type: "array",
+      maxItems: 10,
+      items: evidenceSchema,
+    },
+  },
+  required: ["id", "category", "status", "title", "evidence"],
+} as const;
+
+const llmsTxtSchema = {
+  type: "object",
+  additionalProperties: false,
+  properties: {
+    status: { type: "string", enum: ["generated", "insufficient-content"] },
+    text: nullableStringSchema,
+    evidence: { type: "array", maxItems: 10, items: { type: "string" } },
+  },
+  required: ["status", "text", "evidence"],
+} as const;
+
+const siteIntelligenceSchema = {
+  type: "object",
+  additionalProperties: false,
+  properties: {
+    status: { type: "string", enum: ["complete", "incomplete", "failed"] },
+    inspectedUrl: { type: "string" },
+    fetchedResources: {
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        html: fetchSummarySchema,
+        robotsTxt: { anyOf: [fetchSummarySchema, { type: "null" }] },
+        sitemapXml: { anyOf: [fetchSummarySchema, { type: "null" }] },
+      },
+      required: ["html", "robotsTxt", "sitemapXml"],
+    },
+    checks: { type: "array", maxItems: 50, items: siteCheckSchema },
+    llmsTxt: llmsTxtSchema,
+    prioritizedIssues: {
+      type: "array",
+      maxItems: 10,
+      items: prioritizedIssueSchema,
+    },
+  },
+  required: [
+    "status",
+    "inspectedUrl",
+    "fetchedResources",
+    "checks",
+    "llmsTxt",
+    "prioritizedIssues",
+  ],
+} as const;
+
 export const lighthouseReportOutputSchema = {
   type: "object",
   additionalProperties: false,
@@ -327,51 +507,10 @@ export const lighthouseReportOutputSchema = {
     prioritizedIssues: {
       type: "array",
       maxItems: 10,
-      items: {
-        type: "object",
-        additionalProperties: false,
-        properties: {
-          auditId: { type: "string" },
-          category: { type: "string", enum: CATEGORIES },
-          severity: { type: "string", enum: SEVERITIES },
-          affectedProfiles: {
-            type: "array",
-            uniqueItems: true,
-            items: { type: "string", enum: PROFILE_NAMES },
-          },
-          title: { type: "string" },
-          description: { type: "string" },
-          profiles: {
-            type: "object",
-            additionalProperties: false,
-            properties: {
-              mobile: findingProfileSchema,
-              desktop: findingProfileSchema,
-            },
-          },
-          suggestedActions: {
-            type: "array",
-            items: { type: "string" },
-          },
-          acceptanceCriteria: {
-            type: "array",
-            items: { type: "string" },
-          },
-          documentationUrl: nullableStringSchema,
-        },
-        required: [
-          "auditId",
-          "category",
-          "severity",
-          "affectedProfiles",
-          "title",
-          "description",
-          "profiles",
-          "suggestedActions",
-          "acceptanceCriteria",
-          "documentationUrl",
-        ],
-      },
+      items: prioritizedIssueSchema,
+    },
+    siteIntelligence: {
+      anyOf: [siteIntelligenceSchema, { type: "null" }],
     },
     agentInstructions: {
       type: "array",
@@ -385,6 +524,7 @@ export const lighthouseReportOutputSchema = {
     "environment",
     "profiles",
     "prioritizedIssues",
+    "siteIntelligence",
     "agentInstructions",
   ],
 } as const;
