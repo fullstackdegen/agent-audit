@@ -10,7 +10,12 @@ import type {
   AgentReadyLighthouseReport,
   AuditMode,
   ProfileName,
+  SiteIntelligenceReport,
 } from "./report-schema.js";
+import {
+  analyzeSiteIntelligence as runSiteIntelligence,
+  type AnalyzeSiteIntelligence,
+} from "./site-intelligence.js";
 import { assertPublicHttpUrl } from "./url-policy.js";
 
 interface ChromeProcess {
@@ -29,6 +34,7 @@ interface WebsiteAuditorDependencies {
   ) => Promise<{ lhr: Result } | undefined>;
   validateUrl: (input: unknown) => Promise<URL>;
   now: () => Date;
+  analyzeSiteIntelligence: AnalyzeSiteIntelligence;
 }
 
 export type AuditWebsite = (
@@ -41,6 +47,7 @@ export const auditWebsite = createWebsiteAuditor({
   runLighthouse: async (url, flags, config) => lighthouse(url, flags, config),
   validateUrl: assertPublicHttpUrl,
   now: () => new Date(),
+  analyzeSiteIntelligence: runSiteIntelligence,
 });
 
 /**
@@ -66,10 +73,16 @@ export function createWebsiteAuditor(
       );
     }
 
+    const siteIntelligence = await safeAnalyzeSiteIntelligence(
+      dependencies,
+      requestedUrl,
+    );
+
     return buildAgentReadyReport({
       requestedUrl: requestedUrl.href,
       mode,
       generatedAt: dependencies.now(),
+      siteIntelligence,
       profiles,
     });
   };
@@ -135,6 +148,40 @@ async function collectProfileRuns(
   return { attemptedRuns, failures, runs };
 }
 
+async function safeAnalyzeSiteIntelligence(
+  dependencies: WebsiteAuditorDependencies,
+  requestedUrl: URL,
+): Promise<SiteIntelligenceReport> {
+  try {
+    return await dependencies.analyzeSiteIntelligence(requestedUrl);
+  } catch (error) {
+    const message = toSiteIntelligenceFailureMessage(error);
+    return {
+      status: "failed",
+      inspectedUrl: requestedUrl.href,
+      fetchedResources: {
+        html: {
+          url: requestedUrl.href,
+          statusCode: null,
+          ok: false,
+          contentType: null,
+          finalUrl: requestedUrl.href,
+          error: message,
+        },
+        robotsTxt: null,
+        sitemapXml: null,
+      },
+      checks: [],
+      llmsTxt: {
+        status: "insufficient-content",
+        text: null,
+        evidence: [message],
+      },
+      prioritizedIssues: [],
+    };
+  }
+}
+
 function buildChromeFlags(): string[] {
   const flags = ["--headless=new", "--disable-dev-shm-usage"];
   if (process.env.LIGHTHOUSE_CHROME_NO_SANDBOX === "true") {
@@ -145,4 +192,10 @@ function buildChromeFlags(): string[] {
 
 function toFailureMessage(error: unknown): string {
   return error instanceof Error ? error.message : "Unknown Lighthouse failure.";
+}
+
+function toSiteIntelligenceFailureMessage(error: unknown): string {
+  return error instanceof Error
+    ? error.message
+    : "Site intelligence analysis failed.";
 }
