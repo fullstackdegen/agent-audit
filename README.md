@@ -212,6 +212,8 @@ Runs Lighthouse against a public HTTP or HTTPS URL:
 - At most ten canonical prioritized issues
 - Up to ten evidence rows per issue
 - Resource URLs, DOM selectors, and console error evidence when available
+- Single-URL site intelligence for broken links, metadata, JSON-LD, indexability, images, assets, and LLM visibility
+- Generated `llms.txt` draft when page content is sufficient
 - Suggested actions and measurable acceptance criteria
 - Profile warnings when repeated runs vary materially
 - Canonical `structuredContent` validated by the advertised MCP `outputSchema`
@@ -220,6 +222,12 @@ Runs Lighthouse against a public HTTP or HTTPS URL:
 If only one profile produces enough successful runs, the report has
 `status: "incomplete"`. It remains useful for diagnosis but must not be treated
 as a release baseline.
+
+## Site Intelligence
+
+In addition to Lighthouse, the tool inspects the requested page and bounded same-origin resources. It reports broken links, page metadata issues, JSON-LD syntax issues, robots/sitemap/indexability signals, image optimization findings, CSS/JavaScript optimization findings, and a conservative `llms.txt` draft.
+
+The MVP is single-URL by design. It does not crawl the whole site, modify Shopify or CMS settings, compress images, minify code, create redirects, or submit IndexNow requests.
 
 ## Coding-Agent Workflow
 
@@ -247,6 +255,9 @@ These checks reduce SSRF exposure but do not replace infrastructure controls.
 Production operators should run the server in an isolated environment and deny
 outbound access to private networks and cloud metadata services. Redirects and
 DNS rebinding are best controlled at the network boundary.
+
+The page-inspection fetcher uses the same URL policy as Lighthouse navigation
+and applies timeout, byte-size, and bounded-resource limits.
 
 Page-controlled Lighthouse titles, descriptions, URLs, selectors, and snippets
 are sanitized and length-limited. Consumers must still treat them as untrusted

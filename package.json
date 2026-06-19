@@ -1,6 +1,6 @@
 {
   "name": "mcp-server-lighthouse",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Turn mobile and desktop Lighthouse audits into evidence-backed coding-agent tasks.",
   "type": "module",
   "bin": {

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.0",
+  "schemaVersion": "1.1",
   "status": "complete",
   "target": {
     "requestedUrl": "https://www.commalabs.co/tr",
@@ -10,7 +10,7 @@
   },
   "environment": {
     "generatedAt": "2026-06-14T17:35:41.505Z",
-    "lighthouseVersion": "12.8.2",
+    "lighthouseVersion": "12.6.1",
     "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.0.0 Safari/537.36",
     "mode": "fast",
     "runsPerProfile": 1
@@ -32,11 +32,11 @@
       },
       "scores": {
         "performance": {
-          "median": 93,
-          "min": 93,
-          "max": 93,
+          "median": 90,
+          "min": 90,
+          "max": 90,
           "samples": [
-            93
+            90
           ],
           "unit": "score"
         },
@@ -70,38 +70,38 @@
       },
       "metrics": {
         "firstContentfulPaint": {
-          "median": 966.33,
-          "min": 966.33,
-          "max": 966.33,
+          "median": 995.5709999999999,
+          "min": 995.5709999999999,
+          "max": 995.5709999999999,
           "samples": [
-            966.33
+            995.5709999999999
           ],
           "unit": "ms"
         },
         "speedIndex": {
-          "median": 2178.727117995397,
-          "min": 2178.727117995397,
-          "max": 2178.727117995397,
+          "median": 3126.4165930242216,
+          "min": 3126.4165930242216,
+          "max": 3126.4165930242216,
           "samples": [
-            2178.727117995397
+            3126.4165930242216
           ],
           "unit": "ms"
         },
         "largestContentfulPaint": {
-          "median": 3216.33,
-          "min": 3216.33,
-          "max": 3216.33,
+          "median": 3545.571,
+          "min": 3545.571,
+          "max": 3545.571,
           "samples": [
-            3216.33
+            3545.571
           ],
           "unit": "ms"
         },
         "totalBlockingTime": {
-          "median": 15,
-          "min": 15,
-          "max": 15,
+          "median": 49,
+          "min": 49,
+          "max": 49,
           "samples": [
-            15
+            49
           ],
           "unit": "ms"
         },
@@ -171,29 +171,29 @@
       },
       "metrics": {
         "firstContentfulPaint": {
-          "median": 305.5565,
-          "min": 305.5565,
-          "max": 305.5565,
+          "median": 308.844,
+          "min": 308.844,
+          "max": 308.844,
           "samples": [
-            305.5565
+            308.844
           ],
           "unit": "ms"
         },
         "speedIndex": {
-          "median": 375.0985643327223,
-          "min": 375.0985643327223,
-          "max": 375.0985643327223,
+          "median": 382.3806292528912,
+          "min": 382.3806292528912,
+          "max": 382.3806292528912,
           "samples": [
-            375.0985643327223
+            382.3806292528912
           ],
           "unit": "ms"
         },
         "largestContentfulPaint": {
-          "median": 585.5565,
-          "min": 585.5565,
-          "max": 585.5565,
+          "median": 588.844,
+          "min": 588.844,
+          "max": 588.844,
           "samples": [
-            585.5565
+            588.844
           ],
           "unit": "ms"
         },
@@ -219,7 +219,539 @@
       "variabilityWarnings": []
     }
   },
+  "siteIntelligence": {
+    "status": "complete",
+    "inspectedUrl": "https://www.commalabs.co/tr",
+    "fetchedResources": {
+      "html": {
+        "url": "https://www.commalabs.co/tr",
+        "statusCode": 200,
+        "ok": true,
+        "contentType": "text/html; charset=utf-8",
+        "finalUrl": "https://www.commalabs.co/tr",
+        "error": null
+      },
+      "robotsTxt": {
+        "url": "https://www.commalabs.co/robots.txt",
+        "statusCode": 200,
+        "ok": true,
+        "contentType": "text/html; charset=utf-8",
+        "finalUrl": "https://www.commalabs.co/robots.txt",
+        "error": null
+      },
+      "sitemapXml": {
+        "url": "https://www.commalabs.co/sitemap.xml",
+        "statusCode": 200,
+        "ok": true,
+        "contentType": "text/html; charset=utf-8",
+        "finalUrl": "https://www.commalabs.co/sitemap.xml",
+        "error": null
+      }
+    },
+    "checks": [
+      {
+        "id": "site-render-blocking-asset",
+        "category": "assets",
+        "status": "warn",
+        "title": "Render blocking asset found",
+        "evidence": [
+          {
+            "url": "https://www.commalabs.co/_next/static/chunks/eb91abd9baf32259.css",
+            "selector": "link[rel=\"stylesheet\"]",
+            "snippet": null,
+            "totalBytes": null,
+            "wastedBytes": null,
+            "wastedMs": null
+          },
+          {
+            "url": "https://www.commalabs.co/_next/static/chunks/63116806de80c822.js",
+            "selector": "script[src]",
+            "snippet": null,
+            "totalBytes": null,
+            "wastedBytes": null,
+            "wastedMs": null
+          },
+          {
+            "url": "https://www.commalabs.co/_next/static/chunks/db74325abc5b5b35.js",
+            "selector": "script[src]",
+            "snippet": null,
+            "totalBytes": null,
+            "wastedBytes": null,
+            "wastedMs": null
+          },
+          {
+            "url": "https://www.commalabs.co/_next/static/chunks/91e80d59c97e220b.js",
+            "selector": "script[src]",
+            "snippet": null,
+            "totalBytes": null,
+            "wastedBytes": null,
+            "wastedMs": null
+          },
+          {
+            "url": "https://www.commalabs.co/_next/static/chunks/turbopack-0c9a516cfb4d45fa.js",
+            "selector": "script[src]",
+            "snippet": null,
+            "totalBytes": null,
+            "wastedBytes": null,
+            "wastedMs": null
+          },
+          {
+            "url": "https://www.commalabs.co/_next/static/chunks/455726be14c729ce.js",
+            "selector": "script[src]",
+            "snippet": null,
+            "totalBytes": null,
+            "wastedBytes": null,
+            "wastedMs": null
+          },
+          {
+            "url": "https://www.commalabs.co/_next/static/chunks/6bcbe5d000786e7c.js",
+            "selector": "script[src]",
+            "snippet": null,
+            "totalBytes": null,
+            "wastedBytes": null,
+            "wastedMs": null
+          },
+          {
+            "url": "https://www.commalabs.co/_next/static/chunks/87b41357a59b99ab.js",
+            "selector": "script[src]",
+            "snippet": null,
+            "totalBytes": null,
+            "wastedBytes": null,
+            "wastedMs": null
+          },
+          {
+            "url": "https://www.commalabs.co/_next/static/chunks/d34cfa4bf83d51fa.js",
+            "selector": "script[src]",
+            "snippet": null,
+            "totalBytes": null,
+            "wastedBytes": null,
+            "wastedMs": null
+          },
+          {
+            "url": "https://www.commalabs.co/_next/static/chunks/df4cde154f389101.js",
+            "selector": "script[src]",
+            "snippet": null,
+            "totalBytes": null,
+            "wastedBytes": null,
+            "wastedMs": null
+          }
+        ]
+      }
+    ],
+    "llmsTxt": {
+      "status": "generated",
+      "text": "# Comma Labs \\| Dijital Çözümler & Digital Solutions \\| Comma Labs\n\nSource: https://www.commalabs.co/tr\n\n> A company solving niche market problems, focusing on elegant software solutions with thoughtful user experiences.\n\n## Same-origin links\n- [Comma Labs](https://www.commalabs.co/tr#)\n- [https://www.commalabs.co/tr#consultation](https://www.commalabs.co/tr#consultation)\n- [https://www.commalabs.co/tr#team](https://www.commalabs.co/tr#team)\n- [https://www.commalabs.co/tr#contact](https://www.commalabs.co/tr#contact)\n- [EN](https://www.commalabs.co/en)",
+      "evidence": [
+        "Used document title.",
+        "Used inspected URL as primary page URL.",
+        "Used meta description.",
+        "Included 5 same-origin HTTP links."
+      ]
+    },
+    "prioritizedIssues": [
+      {
+        "auditId": "site-render-blocking-asset",
+        "category": "performance",
+        "severity": "medium",
+        "affectedProfiles": [
+          "mobile",
+          "desktop"
+        ],
+        "title": "Render blocking asset found",
+        "description": "Render blocking asset found",
+        "profiles": {
+          "mobile": {
+            "score": null,
+            "displayValue": null,
+            "impact": {
+              "estimatedSavingsMs": null,
+              "estimatedSavingsBytes": null
+            },
+            "evidence": [
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/eb91abd9baf32259.css",
+                "selector": "link[rel=\"stylesheet\"]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              },
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/63116806de80c822.js",
+                "selector": "script[src]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              },
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/db74325abc5b5b35.js",
+                "selector": "script[src]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              },
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/91e80d59c97e220b.js",
+                "selector": "script[src]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              },
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/turbopack-0c9a516cfb4d45fa.js",
+                "selector": "script[src]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              },
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/455726be14c729ce.js",
+                "selector": "script[src]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              },
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/6bcbe5d000786e7c.js",
+                "selector": "script[src]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              },
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/87b41357a59b99ab.js",
+                "selector": "script[src]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              },
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/d34cfa4bf83d51fa.js",
+                "selector": "script[src]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              },
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/df4cde154f389101.js",
+                "selector": "script[src]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              }
+            ]
+          },
+          "desktop": {
+            "score": null,
+            "displayValue": null,
+            "impact": {
+              "estimatedSavingsMs": null,
+              "estimatedSavingsBytes": null
+            },
+            "evidence": [
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/eb91abd9baf32259.css",
+                "selector": "link[rel=\"stylesheet\"]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              },
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/63116806de80c822.js",
+                "selector": "script[src]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              },
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/db74325abc5b5b35.js",
+                "selector": "script[src]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              },
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/91e80d59c97e220b.js",
+                "selector": "script[src]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              },
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/turbopack-0c9a516cfb4d45fa.js",
+                "selector": "script[src]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              },
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/455726be14c729ce.js",
+                "selector": "script[src]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              },
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/6bcbe5d000786e7c.js",
+                "selector": "script[src]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              },
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/87b41357a59b99ab.js",
+                "selector": "script[src]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              },
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/d34cfa4bf83d51fa.js",
+                "selector": "script[src]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              },
+              {
+                "url": "https://www.commalabs.co/_next/static/chunks/df4cde154f389101.js",
+                "selector": "script[src]",
+                "snippet": null,
+                "totalBytes": null,
+                "wastedBytes": null,
+                "wastedMs": null
+              }
+            ]
+          }
+        },
+        "suggestedActions": [
+          "Fix render blocking asset found."
+        ],
+        "acceptanceCriteria": [
+          "Render blocking asset found check passes in Lighthouse MCP site intelligence."
+        ],
+        "documentationUrl": null
+      }
+    ]
+  },
   "prioritizedIssues": [
+    {
+      "auditId": "site-render-blocking-asset",
+      "category": "performance",
+      "severity": "medium",
+      "affectedProfiles": [
+        "mobile",
+        "desktop"
+      ],
+      "title": "Render blocking asset found",
+      "description": "Render blocking asset found",
+      "profiles": {
+        "mobile": {
+          "score": null,
+          "displayValue": null,
+          "impact": {
+            "estimatedSavingsMs": null,
+            "estimatedSavingsBytes": null
+          },
+          "evidence": [
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/eb91abd9baf32259.css",
+              "selector": "link[rel=\"stylesheet\"]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            },
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/63116806de80c822.js",
+              "selector": "script[src]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            },
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/db74325abc5b5b35.js",
+              "selector": "script[src]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            },
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/91e80d59c97e220b.js",
+              "selector": "script[src]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            },
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/turbopack-0c9a516cfb4d45fa.js",
+              "selector": "script[src]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            },
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/455726be14c729ce.js",
+              "selector": "script[src]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            },
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/6bcbe5d000786e7c.js",
+              "selector": "script[src]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            },
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/87b41357a59b99ab.js",
+              "selector": "script[src]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            },
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/d34cfa4bf83d51fa.js",
+              "selector": "script[src]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            },
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/df4cde154f389101.js",
+              "selector": "script[src]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            }
+          ]
+        },
+        "desktop": {
+          "score": null,
+          "displayValue": null,
+          "impact": {
+            "estimatedSavingsMs": null,
+            "estimatedSavingsBytes": null
+          },
+          "evidence": [
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/eb91abd9baf32259.css",
+              "selector": "link[rel=\"stylesheet\"]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            },
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/63116806de80c822.js",
+              "selector": "script[src]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            },
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/db74325abc5b5b35.js",
+              "selector": "script[src]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            },
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/91e80d59c97e220b.js",
+              "selector": "script[src]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            },
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/turbopack-0c9a516cfb4d45fa.js",
+              "selector": "script[src]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            },
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/455726be14c729ce.js",
+              "selector": "script[src]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            },
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/6bcbe5d000786e7c.js",
+              "selector": "script[src]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            },
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/87b41357a59b99ab.js",
+              "selector": "script[src]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            },
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/d34cfa4bf83d51fa.js",
+              "selector": "script[src]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            },
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/df4cde154f389101.js",
+              "selector": "script[src]",
+              "snippet": null,
+              "totalBytes": null,
+              "wastedBytes": null,
+              "wastedMs": null
+            }
+          ]
+        }
+      },
+      "suggestedActions": [
+        "Fix render blocking asset found."
+      ],
+      "acceptanceCriteria": [
+        "Render blocking asset found check passes in Lighthouse MCP site intelligence."
+      ],
+      "documentationUrl": null
+    },
     {
       "auditId": "link-name",
       "category": "accessibility",
@@ -369,7 +901,7 @@
       "profiles": {
         "mobile": {
           "score": 0,
-          "displayValue": "3,220 ms",
+          "displayValue": "3,550 ms",
           "impact": {
             "estimatedSavingsMs": null,
             "estimatedSavingsBytes": null
@@ -402,33 +934,7 @@
           "displayValue": "Est savings of 61 KiB",
           "impact": {
             "estimatedSavingsMs": 300,
-            "estimatedSavingsBytes": 62761
-          },
-          "evidence": [
-            {
-              "url": "https://www.commalabs.co/_next/static/chunks/f7f8b7557f00a7b3.js",
-              "selector": null,
-              "snippet": null,
-              "totalBytes": 53137,
-              "wastedBytes": 38931,
-              "wastedMs": null
-            },
-            {
-              "url": "https://www.commalabs.co/_next/static/chunks/db74325abc5b5b35.js",
-              "selector": null,
-              "snippet": null,
-              "totalBytes": 71530,
-              "wastedBytes": 23830,
-              "wastedMs": null
-            }
-          ]
-        },
-        "desktop": {
-          "score": 0,
-          "displayValue": "Est savings of 61 KiB",
-          "impact": {
-            "estimatedSavingsMs": 40,
-            "estimatedSavingsBytes": 62865
+            "estimatedSavingsBytes": 62828
           },
           "evidence": [
             {
@@ -444,7 +950,33 @@
               "selector": null,
               "snippet": null,
               "totalBytes": 71539,
-              "wastedBytes": 23934,
+              "wastedBytes": 23897,
+              "wastedMs": null
+            }
+          ]
+        },
+        "desktop": {
+          "score": 0,
+          "displayValue": "Est savings of 61 KiB",
+          "impact": {
+            "estimatedSavingsMs": 40,
+            "estimatedSavingsBytes": 62862
+          },
+          "evidence": [
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/f7f8b7557f00a7b3.js",
+              "selector": null,
+              "snippet": null,
+              "totalBytes": 53137,
+              "wastedBytes": 38931,
+              "wastedMs": null
+            },
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/db74325abc5b5b35.js",
+              "selector": null,
+              "snippet": null,
+              "totalBytes": 71530,
+              "wastedBytes": 23931,
               "wastedMs": null
             }
           ]
@@ -464,7 +996,7 @@
     {
       "auditId": "legacy-javascript",
       "category": "performance",
-      "severity": "high",
+      "severity": "medium",
       "affectedProfiles": [
         "mobile",
         "desktop"
@@ -473,24 +1005,6 @@
       "description": "Polyfills and transforms enable legacy browsers to use new JavaScript features. However, many aren't necessary for modern browsers. Consider modifying your JavaScript build process to not transpile [Baseline](https://web.dev/baseline) features, unless you know you must support legacy browsers. [Learn why most sites can deploy ES6+ code without transpiling](https://philipwalton.com/articles/the-state-of-es5-on-the-web/)",
       "profiles": {
         "mobile": {
-          "score": 0,
-          "displayValue": "Est savings of 14 KiB",
-          "impact": {
-            "estimatedSavingsMs": 150,
-            "estimatedSavingsBytes": 13950
-          },
-          "evidence": [
-            {
-              "url": "https://www.commalabs.co/_next/static/chunks/db74325abc5b5b35.js",
-              "selector": null,
-              "snippet": null,
-              "totalBytes": 0,
-              "wastedBytes": 13988,
-              "wastedMs": null
-            }
-          ]
-        },
-        "desktop": {
           "score": 0.5,
           "displayValue": "Est savings of 14 KiB",
           "impact": {
@@ -503,7 +1017,25 @@
               "selector": null,
               "snippet": null,
               "totalBytes": 0,
-              "wastedBytes": 13997,
+              "wastedBytes": 13996,
+              "wastedMs": null
+            }
+          ]
+        },
+        "desktop": {
+          "score": 0.5,
+          "displayValue": "Est savings of 14 KiB",
+          "impact": {
+            "estimatedSavingsMs": 0,
+            "estimatedSavingsBytes": 13950
+          },
+          "evidence": [
+            {
+              "url": "https://www.commalabs.co/_next/static/chunks/db74325abc5b5b35.js",
+              "selector": null,
+              "snippet": null,
+              "totalBytes": 0,
+              "wastedBytes": 13979,
               "wastedMs": null
             }
           ]
@@ -521,7 +1053,7 @@
     {
       "auditId": "unused-css-rules",
       "category": "performance",
-      "severity": "high",
+      "severity": "medium",
       "affectedProfiles": [
         "mobile",
         "desktop"
@@ -530,10 +1062,10 @@
       "description": "Reduce unused rules from stylesheets and defer CSS not used for above-the-fold content to decrease bytes consumed by network activity. [Learn how to reduce unused CSS](https://developer.chrome.com/docs/lighthouse/performance/unused-css-rules/).",
       "profiles": {
         "mobile": {
-          "score": 0,
+          "score": 0.5,
           "displayValue": "Est savings of 11 KiB",
           "impact": {
-            "estimatedSavingsMs": 150,
+            "estimatedSavingsMs": 0,
             "estimatedSavingsBytes": 11222
           },
           "evidence": [
@@ -593,24 +1125,7 @@
             "estimatedSavingsMs": null,
             "estimatedSavingsBytes": null
           },
-          "evidence": [
-            {
-              "url": null,
-              "selector": null,
-              "snippet": "[preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.",
-              "totalBytes": null,
-              "wastedBytes": null,
-              "wastedMs": null
-            },
-            {
-              "url": null,
-              "selector": null,
-              "snippet": "Add [preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints to your most important origins, but try to use no more than 4.",
-              "totalBytes": null,
-              "wastedBytes": null,
-              "wastedMs": null
-            }
-          ]
+          "evidence": []
         },
         "desktop": {
           "score": 0,
@@ -619,24 +1134,7 @@
             "estimatedSavingsMs": null,
             "estimatedSavingsBytes": null
           },
-          "evidence": [
-            {
-              "url": null,
-              "selector": null,
-              "snippet": "[preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.",
-              "totalBytes": null,
-              "wastedBytes": null,
-              "wastedMs": null
-            },
-            {
-              "url": null,
-              "selector": null,
-              "snippet": "Add [preconnect](https://developer.chrome.com/docs/lighthouse/performance/uses-rel-preconnect/) hints to your most important origins, but try to use no more than 4.",
-              "totalBytes": null,
-              "wastedBytes": null,
-              "wastedMs": null
-            }
-          ]
+          "evidence": []
         }
       },
       "suggestedActions": [
@@ -661,7 +1159,7 @@
       "profiles": {
         "mobile": {
           "score": 0,
-          "displayValue": "Est savings of 90 ms",
+          "displayValue": "Est savings of 0 ms",
           "impact": {
             "estimatedSavingsMs": 0,
             "estimatedSavingsBytes": null
@@ -671,7 +1169,7 @@
               "url": "https://www.commalabs.co/_next/static/chunks/eb91abd9baf32259.css",
               "selector": null,
               "snippet": null,
-              "totalBytes": 14343,
+              "totalBytes": 14344,
               "wastedBytes": null,
               "wastedMs": 150
             }
@@ -689,7 +1187,7 @@
               "url": "https://www.commalabs.co/_next/static/chunks/eb91abd9baf32259.css",
               "selector": null,
               "snippet": null,
-              "totalBytes": 14344,
+              "totalBytes": 14369,
               "wastedBytes": null,
               "wastedMs": null
             }

@@ -48,7 +48,7 @@ describe("Lighthouse MCP server", () => {
 
     expect(client.getServerVersion()).toEqual({
       name: "mcp-server-lighthouse",
-      version: "0.1.2",
+      version: "0.2.0",
     });
   });
 
@@ -158,6 +158,7 @@ function makeReport(mode: "fast" | "reliable" = "reliable") {
     requestedUrl: "https://example.com",
     mode,
     generatedAt: new Date("2026-06-13T12:00:00.000Z"),
+    siteIntelligence: null,
     profiles: {
       mobile: {
         attemptedRuns: count,

@@ -20,6 +20,7 @@ import {
   type NumericDistribution,
   type ProfileName,
   type ProfileReport,
+  type SiteIntelligenceReport,
 } from "./report-schema.js";
 
 export interface CollectedProfileRuns {
@@ -32,6 +33,7 @@ interface BuildReportInput {
   requestedUrl: string;
   mode: AuditMode;
   generatedAt: Date;
+  siteIntelligence?: SiteIntelligenceReport | null;
   profiles: Record<ProfileName, CollectedProfileRuns>;
 }
 
@@ -102,7 +104,11 @@ export function buildAgentReadyReport(
       runsPerProfile: input.mode === "reliable" ? 3 : 1,
     },
     profiles: reports,
-    prioritizedIssues: mergeAndPrioritizeFindings(profileFindings),
+    siteIntelligence: input.siteIntelligence ?? null,
+    prioritizedIssues: [
+      ...(input.siteIntelligence?.prioritizedIssues ?? []),
+      ...mergeAndPrioritizeFindings(profileFindings),
+    ].slice(0, 10),
     agentInstructions: [...AGENT_INSTRUCTIONS],
   };
 }

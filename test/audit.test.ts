@@ -40,6 +40,7 @@ describe("createWebsiteAuditor", () => {
       runLighthouse,
       validateUrl: async (input) => new URL(String(input)),
       now: () => new Date("2026-06-13T12:00:00.000Z"),
+      analyzeSiteIntelligence: async () => makeSiteIntelligence(),
     });
 
     const report = await auditWebsite(
@@ -71,6 +72,7 @@ describe("createWebsiteAuditor", () => {
       runLighthouse,
       validateUrl: async (input) => new URL(String(input)),
       now: () => new Date("2026-06-13T12:00:00.000Z"),
+      analyzeSiteIntelligence: async () => makeSiteIntelligence(),
     });
 
     const report = await auditWebsite(
@@ -81,6 +83,65 @@ describe("createWebsiteAuditor", () => {
     expect(runLighthouse).toHaveBeenCalledTimes(6);
     expect(report.profiles.mobile.successfulRuns).toBe(3);
     expect(report.profiles.desktop.successfulRuns).toBe(3);
+  });
+
+  it("runs site intelligence once for the requested URL", async () => {
+    const siteIntelligence = makeSiteIntelligence();
+    const analyzeSiteIntelligence = vi.fn(async () => siteIntelligence);
+    const auditor = createWebsiteAuditor({
+      launchChrome: async () => ({ port: 9222, kill: vi.fn() }),
+      runLighthouse: async () => ({ lhr: makeLighthouseResult() }),
+      validateUrl: async (input) => new URL(String(input)),
+      now: () => new Date("2026-06-13T12:00:00.000Z"),
+      analyzeSiteIntelligence,
+    });
+
+    const report = await auditor(new URL("https://example.com/"), "fast");
+
+    expect(analyzeSiteIntelligence).toHaveBeenCalledOnce();
+    expect(analyzeSiteIntelligence).toHaveBeenCalledWith(
+      new URL("https://example.com/"),
+    );
+    expect(report.siteIntelligence).toBe(siteIntelligence);
+  });
+
+  it("reports failed site intelligence without rejecting the audit", async () => {
+    const auditor = createWebsiteAuditor({
+      launchChrome: async () => ({ port: 9222, kill: vi.fn() }),
+      runLighthouse: async () => ({ lhr: makeLighthouseResult() }),
+      validateUrl: async (input) => new URL(String(input)),
+      now: () => new Date("2026-06-13T12:00:00.000Z"),
+      analyzeSiteIntelligence: async () => {
+        throw new Error("site intelligence unavailable");
+      },
+    });
+
+    const report = await auditor(new URL("https://example.com/"), "fast");
+
+    expect(report.status).toBe("complete");
+    expect(report.siteIntelligence).toMatchObject({
+      status: "failed",
+      inspectedUrl: "https://example.com/",
+      fetchedResources: {
+        html: {
+          url: "https://example.com/",
+          statusCode: null,
+          ok: false,
+          contentType: null,
+          finalUrl: "https://example.com/",
+          error: "site intelligence unavailable",
+        },
+        robotsTxt: null,
+        sitemapXml: null,
+      },
+      checks: [],
+      llmsTxt: {
+        status: "insufficient-content",
+        text: null,
+        evidence: ["site intelligence unavailable"],
+      },
+      prioritizedIssues: [],
+    });
   });
 
   it("records an individual failure without aborting a reliable profile", async () => {
@@ -101,6 +162,7 @@ describe("createWebsiteAuditor", () => {
       },
       validateUrl: async (input) => new URL(String(input)),
       now: () => new Date("2026-06-13T12:00:00.000Z"),
+      analyzeSiteIntelligence: async () => makeSiteIntelligence(),
     });
 
     const report = await auditWebsite(
@@ -122,6 +184,7 @@ describe("createWebsiteAuditor", () => {
       },
       validateUrl: async (input) => new URL(String(input)),
       now: () => new Date("2026-06-13T12:00:00.000Z"),
+      analyzeSiteIntelligence: async () => makeSiteIntelligence(),
     });
 
     await expect(
@@ -130,3 +193,29 @@ describe("createWebsiteAuditor", () => {
     expect(kill).toHaveBeenCalledTimes(2);
   });
 });
+
+function makeSiteIntelligence() {
+  return {
+    status: "complete",
+    inspectedUrl: "https://example.com/",
+    fetchedResources: {
+      html: {
+        url: "https://example.com/",
+        statusCode: 200,
+        ok: true,
+        contentType: "text/html",
+        finalUrl: "https://example.com/",
+        error: null,
+      },
+      robotsTxt: null,
+      sitemapXml: null,
+    },
+    checks: [],
+    llmsTxt: {
+      status: "generated",
+      text: "# Example",
+      evidence: ["Used document title."],
+    },
+    prioritizedIssues: [],
+  } as const;
+}

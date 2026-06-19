@@ -24,7 +24,7 @@ export interface LighthouseServerDependencies {
 }
 
 const TOOL_NAME = "analyze_website_performance";
-const SERVER_VERSION = "0.1.2";
+const SERVER_VERSION = "0.2.0";
 
 /**
  * Creates the Lighthouse MCP server and its schema-validated tool contract.

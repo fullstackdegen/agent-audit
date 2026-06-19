@@ -66,6 +66,8 @@ export function renderReportMarkdown(
     appendProfileWarnings(lines, profile, report);
   }
 
+  appendSiteIntelligence(lines, report);
+
   lines.push("", "## Prioritized Issues");
   if (report.prioritizedIssues.length === 0) {
     lines.push("", "No actionable Lighthouse issues were found.");
@@ -85,6 +87,46 @@ export function renderReportMarkdown(
   });
 
   return lines.join("\n");
+}
+
+function appendSiteIntelligence(
+  lines: string[],
+  report: AgentReadyLighthouseReport,
+): void {
+  const siteIntelligence = report.siteIntelligence;
+  if (!siteIntelligence) {
+    return;
+  }
+
+  lines.push(
+    "",
+    "## Site Intelligence",
+    "",
+    `- Status: **${siteIntelligence.status}**`,
+    `- Inspected URL: ${inline(siteIntelligence.inspectedUrl)}`,
+    `- Checks: ${siteIntelligence.checks.length}`,
+  );
+
+  const nonPassChecks = siteIntelligence.checks
+    .filter((check) => check.status !== "pass")
+    .slice(0, 10);
+  for (const check of nonPassChecks) {
+    lines.push(
+      `- **${check.status.toUpperCase()}** ${inline(check.title)} (${inline(check.id)})`,
+    );
+  }
+
+  if (siteIntelligence.llmsTxt.text) {
+    const fence = markdownFenceFor(siteIntelligence.llmsTxt.text);
+    lines.push(
+      "",
+      "### Generated llms.txt Draft",
+      "",
+      `${fence}txt`,
+      siteIntelligence.llmsTxt.text,
+      fence,
+    );
+  }
 }
 
 function appendProfileWarnings(
@@ -191,6 +233,14 @@ function formatNumber(value: number | null): string {
 
 function inline(value: string): string {
   return value.replace(/[|\r\n]+/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function markdownFenceFor(value: string): string {
+  const longestBacktickRun = Math.max(
+    0,
+    ...[...value.matchAll(/`+/g)].map((match) => match[0].length),
+  );
+  return "`".repeat(Math.max(3, longestBacktickRun + 1));
 }
 
 function capitalize(value: string): string {
