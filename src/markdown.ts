@@ -115,26 +115,26 @@ function appendFixPack(lines: string[], pack: AgentFixPack): void {
     `- Severity: **${inline(pack.severity)}**`,
     `- Category: ${inline(pack.category)}`,
     `- Affected profiles: ${pack.affectedProfiles.map((profile) => inline(profile)).join(", ")}`,
-    `- Source issues: ${pack.sourceIssueIds.map((id) => `\`${inline(id)}\``).join(", ")}`,
+    `- Source issues: ${pack.sourceIssueIds.map((id) => codeSpan(id)).join(", ")}`,
     "- Repository search hints:",
   );
 
   for (const hint of pack.repoSearchHints) {
-    lines.push(`  - ${inline(hint)}`);
+    lines.push(`  - ${codeSpan(hint)}`);
   }
 
   lines.push("- Implementation steps:");
   for (const step of pack.implementationSteps) {
-    lines.push(`  - ${inline(step)}`);
+    lines.push(`  - ${codeSpan(step)}`);
   }
 
   lines.push("- Acceptance criteria:");
   for (const criterion of pack.acceptanceCriteria) {
-    lines.push(`  - ${inline(criterion)}`);
+    lines.push(`  - ${codeSpan(criterion)}`);
   }
 
   lines.push(
-    `- Verification: rerun this tool in \`${inline(pack.verification.rerunMode)}\` mode; expected audit IDs: ${pack.verification.expectedAuditIds.map((id) => `\`${inline(id)}\``).join(", ")}`,
+    `- Verification: rerun this tool in ${codeSpan(pack.verification.rerunMode)} mode; expected audit IDs: ${pack.verification.expectedAuditIds.map((id) => codeSpan(id)).join(", ")}`,
   );
 }
 
@@ -282,6 +282,19 @@ function formatNumber(value: number | null): string {
 
 function inline(value: string): string {
   return value.replace(/[|\r\n]+/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function codeSpan(value: string): string {
+  const sanitized = inline(value);
+  const longestBacktickRun = Math.max(
+    0,
+    ...[...sanitized.matchAll(/`+/g)].map((match) => match[0].length),
+  );
+  const fence = "`".repeat(longestBacktickRun + 1);
+  const padding =
+    sanitized.startsWith("`") || sanitized.endsWith("`") ? " " : "";
+
+  return `${fence}${padding}${sanitized}${padding}${fence}`;
 }
 
 function markdownFenceFor(value: string): string {
