@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title description">
-  <title id="title">Lighthouse MCP converts raw audits into coding-agent tasks</title>
+  <title id="title">Agent Audit converts raw Lighthouse audits into coding-agent fix packs</title>
   <desc id="description">A product overview showing raw Lighthouse diagnostics transformed into a bounded agent backlog with evidence, actions, and acceptance criteria.</desc>
   <defs>
     <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
@@ -15,9 +15,9 @@
   <circle cx="1420" cy="80" r="230" fill="#0ea5e9" opacity=".08"/>
   <circle cx="110" cy="820" r="260" fill="#22c55e" opacity=".06"/>
 
-  <text x="96" y="92" fill="#7dd3fc" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="24" font-weight="700" letter-spacing="4">LIGHTHOUSE MCP</text>
+  <text x="96" y="92" fill="#7dd3fc" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="24" font-weight="700" letter-spacing="4">AGENT AUDIT</text>
   <text x="96" y="164" fill="#f8fafc" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="58" font-weight="800">Turn Lighthouse audits into</text>
-  <text x="96" y="230" fill="#f8fafc" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="58" font-weight="800">coding-agent tasks.</text>
+  <text x="96" y="230" fill="#f8fafc" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="58" font-weight="800">coding-agent fix packs.</text>
   <text x="98" y="278" fill="#94a3b8" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="23">Repeatable mobile + desktop audits. Evidence-backed actions. Measurable acceptance criteria.</text>
 
   <g filter="url(#shadow)">
@@ -88,6 +88,6 @@
     <text x="530" y="817" fill="#cbd5e1" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" font-weight="700">STRUCTURED JSON + MARKDOWN</text>
     <rect x="712" y="790" width="180" height="42" rx="21" fill="#1e293b" stroke="#334155"/>
     <text x="802" y="817" fill="#cbd5e1" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" font-weight="700">MCP-NATIVE</text>
-    <text x="1504" y="817" fill="#64748b" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14">mcp-server-lighthouse</text>
+    <text x="1504" y="817" fill="#64748b" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14">agent-audit</text>
   </g>
 </svg>

@@ -84,7 +84,7 @@ Source: https://www.commalabs.co/tr
 - Suggested actions:
   - Fix render blocking asset found.
 - Acceptance criteria:
-  - Render blocking asset found check passes in Lighthouse MCP site intelligence.
+  - Render blocking asset found check passes in Agent Audit site intelligence.
 
 ### 2. Links do not have a discernible name
 

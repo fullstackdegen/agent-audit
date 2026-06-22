@@ -104,6 +104,11 @@ describe("buildSiteFindings", () => {
     expect(result.prioritizedIssues[0]?.suggestedActions.length).toBeGreaterThan(
       0,
     );
+    const acceptanceCriteria = result.prioritizedIssues
+      .flatMap((issue) => issue.acceptanceCriteria)
+      .join("\n");
+    expect(acceptanceCriteria).toContain("Agent Audit site intelligence");
+    expect(acceptanceCriteria).not.toContain("Lighthouse MCP");
   });
 
   it("aggregates repeated broken links and image checks with bounded evidence", () => {

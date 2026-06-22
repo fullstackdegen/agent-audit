@@ -5,7 +5,7 @@ import { parseCliOptions } from "./cli-options.js";
 import { createLighthouseServer } from "./server.js";
 
 /**
- * Connects the Lighthouse MCP server to the standard I/O transport.
+ * Connects the Agent Audit server to the standard I/O transport.
  */
 async function main(): Promise<void> {
   const cliOptions = parseCliOptions(process.argv.slice(2));
@@ -25,10 +25,10 @@ async function main(): Promise<void> {
   const transport = new StdioServerTransport();
 
   await server.connect(transport);
-  console.error("Lighthouse MCP server is ready on stdio.");
+  console.error("Agent Audit server is ready on stdio.");
 }
 
 main().catch((error: unknown) => {
-  console.error("Failed to initialize the Lighthouse MCP server:", error);
+  console.error("Failed to initialize the Agent Audit server:", error);
   process.exitCode = 1;
 });

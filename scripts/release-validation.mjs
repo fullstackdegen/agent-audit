@@ -7,11 +7,14 @@ export function validateReleaseSurface({
   contributing,
   exampleJson,
   exampleMarkdown,
+  overviewSvg,
 }) {
   const failures = [];
   const requireValue = (condition, message) => {
     if (!condition) failures.push(message);
   };
+  const hasStalePublicBranding = (value) =>
+    value.includes("mcp-server-lighthouse") || value.includes("Lighthouse MCP");
 
   requireValue(
     packageJson.name === "agent-audit",
@@ -38,6 +41,10 @@ export function validateReleaseSurface({
   requireValue(
     readme.includes("Turn Lighthouse audits into coding-agent fix packs."),
     "README must contain the product promise",
+  );
+  requireValue(
+    !hasStalePublicBranding(readme),
+    "README must not contain stale Lighthouse MCP branding",
   );
   requireValue(
     !contributing.includes("20-issue"),
@@ -68,6 +75,20 @@ export function validateReleaseSurface({
     exampleMarkdown.includes("# Lighthouse Implementation Report"),
     "Example Markdown report is invalid",
   );
+  requireValue(
+    !hasStalePublicBranding(exampleMarkdown),
+    "Example Markdown must not contain stale Lighthouse MCP branding",
+  );
+  requireValue(
+    !hasStalePublicBranding(JSON.stringify(exampleJson)),
+    "Example JSON must not contain stale Lighthouse MCP branding",
+  );
+  if (overviewSvg !== undefined) {
+    requireValue(
+      !hasStalePublicBranding(overviewSvg),
+      "Overview SVG must not contain stale Lighthouse MCP branding",
+    );
+  }
 
   return failures;
 }

@@ -408,7 +408,7 @@ function checkToIssue(check: SiteCheck): PrioritizedIssue {
     },
     suggestedActions: [`Fix ${check.title.toLowerCase()}.`],
     acceptanceCriteria: [
-      `${check.title} check passes in Lighthouse MCP site intelligence.`,
+      `${check.title} check passes in Agent Audit site intelligence.`,
     ],
     documentationUrl: null,
   };

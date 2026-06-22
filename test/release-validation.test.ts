@@ -32,6 +32,7 @@ describe("release surface validation", () => {
         "package.json homepage is required",
         "package.json bugs.url is required",
         "README must contain the product promise",
+        "README must not contain stale Lighthouse MCP branding",
         "CONTRIBUTING must not reference the obsolete 20-issue limit",
         "Example report must contain at most 10 tasks",
       ]),
@@ -62,6 +63,7 @@ describe("release surface validation", () => {
         prioritizedIssues: [],
       },
       exampleMarkdown: "# Lighthouse Implementation Report",
+      overviewSvg: "<svg><title>Agent Audit</title></svg>",
     });
 
     expect(failures).toEqual([]);
@@ -97,6 +99,50 @@ describe("release surface validation", () => {
       expect.arrayContaining([
         "package.json name must be agent-audit",
         "package.json must expose the agent-audit binary",
+      ]),
+    );
+  });
+
+  it("reports stale public branding in examples and overview assets", () => {
+    const failures = validateReleaseSurface({
+      packageJson: {
+        name: "agent-audit",
+        description: "Turn Lighthouse audits into coding-agent fix packs.",
+        bin: { "agent-audit": "dist/index.js" },
+        repository: { url: "https://github.com/example/lighthouse-mcp.git" },
+        homepage: "https://github.com/example/lighthouse-mcp#readme",
+        bugs: { url: "https://github.com/example/lighthouse-mcp/issues" },
+        scripts: {
+          prepublishOnly:
+            "npm test && npm run check && npm run build && npm run validate:release",
+        },
+      },
+      readme: "Turn Lighthouse audits into coding-agent fix packs.",
+      contributing: "Preserve the 10-issue response limit.",
+      exampleJson: {
+        status: "complete",
+        target: { requestedUrl: "https://www.commalabs.co/tr" },
+        environment: { generatedAt: "2026-06-14T12:00:00.000Z" },
+        profiles: { mobile: {}, desktop: {} },
+        prioritizedIssues: [
+          {
+            acceptanceCriteria: [
+              "Check passes in Lighthouse MCP site intelligence.",
+            ],
+          },
+        ],
+      },
+      exampleMarkdown:
+        "# Lighthouse Implementation Report\n\nRun with mcp-server-lighthouse.",
+      overviewSvg:
+        "<svg><title>Lighthouse MCP converts raw audits</title></svg>",
+    });
+
+    expect(failures).toEqual(
+      expect.arrayContaining([
+        "Example Markdown must not contain stale Lighthouse MCP branding",
+        "Example JSON must not contain stale Lighthouse MCP branding",
+        "Overview SVG must not contain stale Lighthouse MCP branding",
       ]),
     );
   });

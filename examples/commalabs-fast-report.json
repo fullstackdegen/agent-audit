@@ -545,7 +545,7 @@
           "Fix render blocking asset found."
         ],
         "acceptanceCriteria": [
-          "Render blocking asset found check passes in Lighthouse MCP site intelligence."
+          "Render blocking asset found check passes in Agent Audit site intelligence."
         ],
         "documentationUrl": null
       }
@@ -748,7 +748,7 @@
         "Fix render blocking asset found."
       ],
       "acceptanceCriteria": [
-        "Render blocking asset found check passes in Lighthouse MCP site intelligence."
+        "Render blocking asset found check passes in Agent Audit site intelligence."
       ],
       "documentationUrl": null
     },

@@ -19,7 +19,7 @@ afterEach(async () => {
   }
 });
 
-describe("Lighthouse MCP server", () => {
+describe("Agent Audit server", () => {
   it("publishes input and structured output schemas", async () => {
     const client = await connectTestClient();
     const result = await client.listTools();

@@ -16,6 +16,7 @@ try {
       "examples/commalabs-fast-report.md",
       "utf8",
     ),
+    overviewSvg: await readFile("docs/assets/lighthouse-mcp-overview.svg", "utf8"),
   });
 
   if (failures.length > 0) {
