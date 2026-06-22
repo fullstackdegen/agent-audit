@@ -11,8 +11,10 @@ const MAX_IMPLEMENTATION_STEPS = 6;
 const MAX_ACCEPTANCE_CRITERIA = 6;
 
 export function buildFixPacks(issues: PrioritizedIssue[]): AgentFixPack[] {
+  const usedIds = new Set<string>();
+
   return issues.slice(0, MAX_FIX_PACKS).map((issue, index) => ({
-    id: `fix-${slugify(issue.auditId)}`,
+    id: buildFixPackId(issue, index, usedIds),
     priority: index + 1,
     sourceIssueIds: [issue.auditId],
     goal: `Fix ${sentenceCase(issue.title)}.`,
@@ -21,15 +23,45 @@ export function buildFixPacks(issues: PrioritizedIssue[]): AgentFixPack[] {
     affectedProfiles: [...issue.affectedProfiles],
     repoSearchHints: buildRepoSearchHints(issue),
     implementationSteps: buildImplementationSteps(issue),
-    acceptanceCriteria: issue.acceptanceCriteria.slice(
-      0,
-      MAX_ACCEPTANCE_CRITERIA,
-    ),
+    acceptanceCriteria: buildAcceptanceCriteria(issue),
     verification: {
       rerunMode: "reliable",
       expectedAuditIds: [issue.auditId],
     },
   }));
+}
+
+function buildFixPackId(
+  issue: PrioritizedIssue,
+  index: number,
+  usedIds: Set<string>,
+): string {
+  const baseId = `fix-${slugify(issue.auditId)}`;
+  let id = baseId;
+
+  if (usedIds.has(id)) {
+    let suffix = index + 1;
+    do {
+      id = `${baseId}-${suffix}`;
+      suffix += 1;
+    } while (usedIds.has(id));
+  }
+
+  usedIds.add(id);
+
+  return id;
+}
+
+function buildAcceptanceCriteria(issue: PrioritizedIssue): string[] {
+  const criteria = issue.acceptanceCriteria.slice(0, MAX_ACCEPTANCE_CRITERIA);
+
+  if (criteria.length > 0) {
+    return criteria;
+  }
+
+  return [
+    `The ${issue.auditId} audit no longer appears in the prioritized issue list after rerunning in reliable mode.`,
+  ];
 }
 
 function buildRepoSearchHints(issue: PrioritizedIssue): string[] {

@@ -82,6 +82,35 @@ describe("buildFixPacks", () => {
       "Keep changes focused on source issue IDs: render-blocking-resources.",
     );
   });
+
+  it("adds fallback acceptance criteria when source criteria are empty", () => {
+    const [pack] = buildFixPacks([
+      makeIssue({
+        auditId: "uses-rel-preconnect",
+        acceptanceCriteria: [],
+      }),
+    ]);
+
+    expect(pack?.acceptanceCriteria).toEqual([
+      "The uses-rel-preconnect audit no longer appears in the prioritized issue list after rerunning in reliable mode.",
+    ]);
+  });
+
+  it("generates unique deterministic IDs when audit IDs slugify to the same value", () => {
+    const packs = buildFixPacks([
+      makeIssue({ auditId: "link name" }),
+      makeIssue({ auditId: "link-name" }),
+      makeIssue({ auditId: "!!!" }),
+      makeIssue({ auditId: "???" }),
+    ]);
+
+    expect(packs.map((pack) => pack.id)).toEqual([
+      "fix-link-name",
+      "fix-link-name-2",
+      "fix-issue",
+      "fix-issue-4",
+    ]);
+  });
 });
 
 function makeIssue(overrides: Partial<PrioritizedIssue> = {}): PrioritizedIssue {
