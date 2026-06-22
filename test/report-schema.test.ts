@@ -56,8 +56,10 @@ describe("report contract", () => {
       type: "array",
       minItems: 1,
       maxItems: 5,
+      uniqueItems: true,
       items: { type: "string" },
     });
+    expect(fixPackSchema.properties.sourceIssueIds.uniqueItems).toBe(true);
     expect(fixPackSchema.properties.category.enum).toEqual([
       "performance",
       "accessibility",
@@ -89,11 +91,16 @@ describe("report contract", () => {
           type: "array",
           minItems: 1,
           maxItems: 5,
+          uniqueItems: true,
           items: { type: "string" },
         },
       },
       required: ["rerunMode", "expectedAuditIds"],
     });
+    expect(
+      fixPackSchema.properties.verification.properties.expectedAuditIds
+        .uniqueItems,
+    ).toBe(true);
   });
 
   it("requires nullable strict site intelligence output", () => {
