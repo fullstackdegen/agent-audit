@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1",
+  "schemaVersion": "1.2",
   "status": "complete",
   "target": {
     "requestedUrl": "https://www.commalabs.co/tr",
@@ -32,11 +32,11 @@
       },
       "scores": {
         "performance": {
-          "median": 90,
-          "min": 90,
-          "max": 90,
+          "median": 97,
+          "min": 97,
+          "max": 97,
           "samples": [
-            90
+            97
           ],
           "unit": "score"
         },
@@ -70,38 +70,38 @@
       },
       "metrics": {
         "firstContentfulPaint": {
-          "median": 995.5709999999999,
-          "min": 995.5709999999999,
-          "max": 995.5709999999999,
+          "median": 991.731,
+          "min": 991.731,
+          "max": 991.731,
           "samples": [
-            995.5709999999999
+            991.731
           ],
           "unit": "ms"
         },
         "speedIndex": {
-          "median": 3126.4165930242216,
-          "min": 3126.4165930242216,
-          "max": 3126.4165930242216,
+          "median": 2262.8803179978368,
+          "min": 2262.8803179978368,
+          "max": 2262.8803179978368,
           "samples": [
-            3126.4165930242216
+            2262.8803179978368
           ],
           "unit": "ms"
         },
         "largestContentfulPaint": {
-          "median": 3545.571,
-          "min": 3545.571,
-          "max": 3545.571,
+          "median": 2641.7309999999998,
+          "min": 2641.7309999999998,
+          "max": 2641.7309999999998,
           "samples": [
-            3545.571
+            2641.7309999999998
           ],
           "unit": "ms"
         },
         "totalBlockingTime": {
-          "median": 49,
-          "min": 49,
-          "max": 49,
+          "median": 47.5,
+          "min": 47.5,
+          "max": 47.5,
           "samples": [
-            49
+            47.5
           ],
           "unit": "ms"
         },
@@ -171,29 +171,29 @@
       },
       "metrics": {
         "firstContentfulPaint": {
-          "median": 308.844,
-          "min": 308.844,
-          "max": 308.844,
+          "median": 311.865,
+          "min": 311.865,
+          "max": 311.865,
           "samples": [
-            308.844
+            311.865
           ],
           "unit": "ms"
         },
         "speedIndex": {
-          "median": 382.3806292528912,
-          "min": 382.3806292528912,
-          "max": 382.3806292528912,
+          "median": 429.2425564892069,
+          "min": 429.2425564892069,
+          "max": 429.2425564892069,
           "samples": [
-            382.3806292528912
+            429.2425564892069
           ],
           "unit": "ms"
         },
         "largestContentfulPaint": {
-          "median": 588.844,
-          "min": 588.844,
-          "max": 588.844,
+          "median": 591.865,
+          "min": 591.865,
+          "max": 591.865,
           "samples": [
-            588.844
+            591.865
           ],
           "unit": "ms"
         },
@@ -901,7 +901,7 @@
       "profiles": {
         "mobile": {
           "score": 0,
-          "displayValue": "3,550 ms",
+          "displayValue": "2,640 ms",
           "impact": {
             "estimatedSavingsMs": null,
             "estimatedSavingsBytes": null
@@ -934,7 +934,7 @@
           "displayValue": "Est savings of 61 KiB",
           "impact": {
             "estimatedSavingsMs": 300,
-            "estimatedSavingsBytes": 62828
+            "estimatedSavingsBytes": 62862
           },
           "evidence": [
             {
@@ -949,8 +949,8 @@
               "url": "https://www.commalabs.co/_next/static/chunks/db74325abc5b5b35.js",
               "selector": null,
               "snippet": null,
-              "totalBytes": 71539,
-              "wastedBytes": 23897,
+              "totalBytes": 71530,
+              "wastedBytes": 23931,
               "wastedMs": null
             }
           ]
@@ -1009,7 +1009,7 @@
           "displayValue": "Est savings of 14 KiB",
           "impact": {
             "estimatedSavingsMs": 0,
-            "estimatedSavingsBytes": 13951
+            "estimatedSavingsBytes": 13950
           },
           "evidence": [
             {
@@ -1017,7 +1017,7 @@
               "selector": null,
               "snippet": null,
               "totalBytes": 0,
-              "wastedBytes": 13996,
+              "wastedBytes": 14000,
               "wastedMs": null
             }
           ]
@@ -1187,7 +1187,7 @@
               "url": "https://www.commalabs.co/_next/static/chunks/eb91abd9baf32259.css",
               "selector": null,
               "snippet": null,
-              "totalBytes": 14369,
+              "totalBytes": 14344,
               "wastedBytes": null,
               "wastedMs": null
             }
@@ -1298,6 +1298,344 @@
         "Raise the median seo score to at least 90/100."
       ],
       "documentationUrl": "https://developer.chrome.com/docs/lighthouse/seo/invalid-robots-txt/"
+    }
+  ],
+  "fixPacks": [
+    {
+      "id": "fix-site-render-blocking-asset",
+      "priority": 1,
+      "sourceIssueIds": [
+        "site-render-blocking-asset"
+      ],
+      "goal": "Fix Render blocking asset found.",
+      "category": "performance",
+      "severity": "medium",
+      "affectedProfiles": [
+        "mobile",
+        "desktop"
+      ],
+      "repoSearchHints": [
+        "link[rel=\"stylesheet\"]",
+        "https://www.commalabs.co/_next/static/chunks/eb91abd9baf32259.css",
+        "script[src]",
+        "https://www.commalabs.co/_next/static/chunks/63116806de80c822.js",
+        "https://www.commalabs.co/_next/static/chunks/db74325abc5b5b35.js",
+        "https://www.commalabs.co/_next/static/chunks/91e80d59c97e220b.js",
+        "https://www.commalabs.co/_next/static/chunks/turbopack-0c9a516cfb4d45fa.js",
+        "https://www.commalabs.co/_next/static/chunks/455726be14c729ce.js"
+      ],
+      "implementationSteps": [
+        "Inspect the repository for the evidence listed in repoSearchHints before editing.",
+        "Fix render blocking asset found.",
+        "Keep changes focused on source issue IDs: site-render-blocking-asset."
+      ],
+      "acceptanceCriteria": [
+        "Render blocking asset found check passes in Agent Audit site intelligence."
+      ],
+      "verification": {
+        "rerunMode": "reliable",
+        "expectedAuditIds": [
+          "site-render-blocking-asset"
+        ]
+      }
+    },
+    {
+      "id": "fix-link-name",
+      "priority": 2,
+      "sourceIssueIds": [
+        "link-name"
+      ],
+      "goal": "Fix Links do not have a discernible name.",
+      "category": "accessibility",
+      "severity": "critical",
+      "affectedProfiles": [
+        "mobile",
+        "desktop"
+      ],
+      "repoSearchHints": [
+        "div.border-t-2 > div.flex > div.flex > a.text-gray-600",
+        "<a class=\"text-gray-600 hover:text-black transition-colors\" target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://www.linkedin.com/company/commalabs\">",
+        "<a class=\"text-gray-600 hover:text-black transition-colors\" target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://www.instagram.com/commalabs.co\">",
+        "nav.fixed > div.mx-auto > div.flex > a.whitespace-nowrap",
+        "<a class=\"whitespace-nowrap text-sm font-medium focus-visible:outline-none focus-vis…\" data-state=\"closed\" href=\"#consultation\">",
+        "<a class=\"whitespace-nowrap text-sm font-medium focus-visible:outline-none focus-vis…\" data-state=\"closed\" href=\"#team\">",
+        "<a class=\"whitespace-nowrap text-sm font-medium focus-visible:outline-none focus-vis…\" data-state=\"closed\" href=\"#contact\">",
+        "<a target=\"_blank\" rel=\"noopener noreferrer\" class=\"whitespace-nowrap text-sm font-medium focus-visible:outline-none focus-vis…\" data-state=\"closed\" href=\"https://wa.me/905372519038\">"
+      ],
+      "implementationSteps": [
+        "Inspect the repository for the evidence listed in repoSearchHints before editing.",
+        "Give every link a discernible accessible name.",
+        "Keep changes focused on source issue IDs: link-name."
+      ],
+      "acceptanceCriteria": [
+        "All link elements pass the Lighthouse link-name audit.",
+        "Raise the median accessibility score to at least 90/100."
+      ],
+      "verification": {
+        "rerunMode": "reliable",
+        "expectedAuditIds": [
+          "link-name"
+        ]
+      }
+    },
+    {
+      "id": "fix-largest-contentful-paint-element",
+      "priority": 3,
+      "sourceIssueIds": [
+        "largest-contentful-paint-element"
+      ],
+      "goal": "Fix Largest contentful paint element.",
+      "category": "performance",
+      "severity": "high",
+      "affectedProfiles": [
+        "mobile"
+      ],
+      "repoSearchHints": [
+        "Search for user-visible content related to: Largest Contentful Paint element"
+      ],
+      "implementationSteps": [
+        "Inspect the repository for the evidence listed in repoSearchHints before editing.",
+        "Prioritize the LCP resource and reduce work required to render its element.",
+        "Keep changes focused on source issue IDs: largest-contentful-paint-element."
+      ],
+      "acceptanceCriteria": [
+        "Keep median Largest Contentful Paint at or below 2,500 ms.",
+        "Raise the median performance score to at least 90/100."
+      ],
+      "verification": {
+        "rerunMode": "reliable",
+        "expectedAuditIds": [
+          "largest-contentful-paint-element"
+        ]
+      }
+    },
+    {
+      "id": "fix-unused-javascript",
+      "priority": 4,
+      "sourceIssueIds": [
+        "unused-javascript"
+      ],
+      "goal": "Fix Reduce unused javascript.",
+      "category": "performance",
+      "severity": "high",
+      "affectedProfiles": [
+        "mobile",
+        "desktop"
+      ],
+      "repoSearchHints": [
+        "https://www.commalabs.co/_next/static/chunks/f7f8b7557f00a7b3.js",
+        "https://www.commalabs.co/_next/static/chunks/db74325abc5b5b35.js"
+      ],
+      "implementationSteps": [
+        "Inspect the repository for the evidence listed in repoSearchHints before editing.",
+        "Remove unused modules and split non-critical JavaScript into on-demand chunks.",
+        "Keep changes focused on source issue IDs: unused-javascript."
+      ],
+      "acceptanceCriteria": [
+        "Reduce the reported wasted JavaScript bytes.",
+        "Keep median mobile Total Blocking Time at or below 200 ms.",
+        "Raise the median performance score to at least 90/100.",
+        "Keep median desktop Total Blocking Time at or below 150 ms."
+      ],
+      "verification": {
+        "rerunMode": "reliable",
+        "expectedAuditIds": [
+          "unused-javascript"
+        ]
+      }
+    },
+    {
+      "id": "fix-legacy-javascript",
+      "priority": 5,
+      "sourceIssueIds": [
+        "legacy-javascript"
+      ],
+      "goal": "Fix Avoid serving legacy javascript to modern browsers.",
+      "category": "performance",
+      "severity": "medium",
+      "affectedProfiles": [
+        "mobile",
+        "desktop"
+      ],
+      "repoSearchHints": [
+        "https://www.commalabs.co/_next/static/chunks/db74325abc5b5b35.js"
+      ],
+      "implementationSteps": [
+        "Inspect the repository for the evidence listed in repoSearchHints before editing.",
+        "Adjust the JavaScript build target to avoid unnecessary legacy transforms and polyfills for supported browsers.",
+        "Keep changes focused on source issue IDs: legacy-javascript."
+      ],
+      "acceptanceCriteria": [
+        "Reduce the legacy JavaScript bytes reported by Lighthouse.",
+        "Raise the median performance score to at least 90/100."
+      ],
+      "verification": {
+        "rerunMode": "reliable",
+        "expectedAuditIds": [
+          "legacy-javascript"
+        ]
+      }
+    },
+    {
+      "id": "fix-unused-css-rules",
+      "priority": 6,
+      "sourceIssueIds": [
+        "unused-css-rules"
+      ],
+      "goal": "Fix Reduce unused css.",
+      "category": "performance",
+      "severity": "medium",
+      "affectedProfiles": [
+        "mobile",
+        "desktop"
+      ],
+      "repoSearchHints": [
+        "https://www.commalabs.co/_next/static/chunks/eb91abd9baf32259.css"
+      ],
+      "implementationSteps": [
+        "Inspect the repository for the evidence listed in repoSearchHints before editing.",
+        "Remove unused selectors and load non-critical styles only where required.",
+        "Keep changes focused on source issue IDs: unused-css-rules."
+      ],
+      "acceptanceCriteria": [
+        "Reduce the reported wasted CSS bytes.",
+        "Raise the median performance score to at least 90/100."
+      ],
+      "verification": {
+        "rerunMode": "reliable",
+        "expectedAuditIds": [
+          "unused-css-rules"
+        ]
+      }
+    },
+    {
+      "id": "fix-network-dependency-tree-insight",
+      "priority": 7,
+      "sourceIssueIds": [
+        "network-dependency-tree-insight"
+      ],
+      "goal": "Fix Network dependency tree.",
+      "category": "performance",
+      "severity": "high",
+      "affectedProfiles": [
+        "mobile",
+        "desktop"
+      ],
+      "repoSearchHints": [
+        "Search for user-visible content related to: Network dependency tree"
+      ],
+      "implementationSteps": [
+        "Inspect the repository for the evidence listed in repoSearchHints before editing.",
+        "Shorten critical request chains, defer non-critical dependencies, and keep preconnect hints limited to required origins.",
+        "Keep changes focused on source issue IDs: network-dependency-tree-insight."
+      ],
+      "acceptanceCriteria": [
+        "Reduce the longest critical dependency chain and remove unnecessary preconnect hints reported by Lighthouse.",
+        "Raise the median performance score to at least 90/100."
+      ],
+      "verification": {
+        "rerunMode": "reliable",
+        "expectedAuditIds": [
+          "network-dependency-tree-insight"
+        ]
+      }
+    },
+    {
+      "id": "fix-render-blocking-resources",
+      "priority": 8,
+      "sourceIssueIds": [
+        "render-blocking-resources"
+      ],
+      "goal": "Fix Eliminate render-blocking resources.",
+      "category": "performance",
+      "severity": "high",
+      "affectedProfiles": [
+        "mobile",
+        "desktop"
+      ],
+      "repoSearchHints": [
+        "https://www.commalabs.co/_next/static/chunks/eb91abd9baf32259.css"
+      ],
+      "implementationSteps": [
+        "Inspect the repository for the evidence listed in repoSearchHints before editing.",
+        "Inline critical styles and defer non-critical stylesheets and scripts.",
+        "Keep changes focused on source issue IDs: render-blocking-resources."
+      ],
+      "acceptanceCriteria": [
+        "Eliminate render-blocking resources from the critical rendering path.",
+        "Raise the median performance score to at least 90/100."
+      ],
+      "verification": {
+        "rerunMode": "reliable",
+        "expectedAuditIds": [
+          "render-blocking-resources"
+        ]
+      }
+    },
+    {
+      "id": "fix-errors-in-console",
+      "priority": 9,
+      "sourceIssueIds": [
+        "errors-in-console"
+      ],
+      "goal": "Fix Browser errors were logged to the console.",
+      "category": "best-practices",
+      "severity": "high",
+      "affectedProfiles": [
+        "mobile",
+        "desktop"
+      ],
+      "repoSearchHints": [
+        "https://www.commalabs.co/_next/static/media/fonts.woff2",
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "implementationSteps": [
+        "Inspect the repository for the evidence listed in repoSearchHints before editing.",
+        "Resolve application, resource-loading, and browser console errors.",
+        "Keep changes focused on source issue IDs: errors-in-console."
+      ],
+      "acceptanceCriteria": [
+        "The audited page produces no Lighthouse-reported browser errors.",
+        "Raise the median best-practices score to at least 90/100."
+      ],
+      "verification": {
+        "rerunMode": "reliable",
+        "expectedAuditIds": [
+          "errors-in-console"
+        ]
+      }
+    },
+    {
+      "id": "fix-robots-txt",
+      "priority": 10,
+      "sourceIssueIds": [
+        "robots-txt"
+      ],
+      "goal": "Fix Robots.txt is not valid.",
+      "category": "seo",
+      "severity": "high",
+      "affectedProfiles": [
+        "mobile",
+        "desktop"
+      ],
+      "repoSearchHints": [
+        "Search for user-visible content related to: robots.txt is not valid"
+      ],
+      "implementationSteps": [
+        "Inspect the repository for the evidence listed in repoSearchHints before editing.",
+        "Fix robots.txt syntax errors, remove unsupported directives, and serve the file as plain text with an HTTP 200 response.",
+        "Keep changes focused on source issue IDs: robots-txt."
+      ],
+      "acceptanceCriteria": [
+        "Serve a valid robots.txt file that passes the Lighthouse robots-txt audit.",
+        "Raise the median seo score to at least 90/100."
+      ],
+      "verification": {
+        "rerunMode": "reliable",
+        "expectedAuditIds": [
+          "robots-txt"
+        ]
+      }
     }
   ],
   "agentInstructions": [

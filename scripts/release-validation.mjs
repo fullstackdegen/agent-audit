@@ -60,6 +60,12 @@ export function validateReleaseSurface({
     "Example report must contain at most 10 tasks",
   );
   requireValue(
+    Array.isArray(exampleJson.fixPacks) &&
+      Array.isArray(exampleJson.prioritizedIssues) &&
+      exampleJson.fixPacks.length === exampleJson.prioritizedIssues.length,
+    "Example report must include one fix pack per prioritized issue",
+  );
+  requireValue(
     exampleJson.environment?.generatedAt?.startsWith("2026-06-14"),
     "Example must contain its canonical capture timestamp",
   );
@@ -74,6 +80,10 @@ export function validateReleaseSurface({
   requireValue(
     exampleMarkdown.includes("# Lighthouse Implementation Report"),
     "Example Markdown report is invalid",
+  );
+  requireValue(
+    exampleMarkdown.includes("## Agent Fix Packs"),
+    "Example Markdown report must include agent fix packs",
   );
   requireValue(
     !hasStalePublicBranding(exampleMarkdown),
