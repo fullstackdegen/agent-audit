@@ -112,9 +112,9 @@ function appendFixPack(lines: string[], pack: AgentFixPack): void {
     "",
     `### Fix Pack ${pack.priority}: ${inline(pack.goal)}`,
     "",
-    `- Severity: **${pack.severity}**`,
-    `- Category: ${pack.category}`,
-    `- Affected profiles: ${pack.affectedProfiles.join(", ")}`,
+    `- Severity: **${inline(pack.severity)}**`,
+    `- Category: ${inline(pack.category)}`,
+    `- Affected profiles: ${pack.affectedProfiles.map((profile) => inline(profile)).join(", ")}`,
     `- Source issues: ${pack.sourceIssueIds.map((id) => `\`${inline(id)}\``).join(", ")}`,
     "- Repository search hints:",
   );
@@ -134,7 +134,7 @@ function appendFixPack(lines: string[], pack: AgentFixPack): void {
   }
 
   lines.push(
-    `- Verification: rerun this tool in \`${pack.verification.rerunMode}\` mode; expected audit IDs: ${pack.verification.expectedAuditIds.map((id) => `\`${inline(id)}\``).join(", ")}`,
+    `- Verification: rerun this tool in \`${inline(pack.verification.rerunMode)}\` mode; expected audit IDs: ${pack.verification.expectedAuditIds.map((id) => `\`${inline(id)}\``).join(", ")}`,
   );
 }
 

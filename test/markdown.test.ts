@@ -145,17 +145,29 @@ describe("renderReportMarkdown", () => {
     });
 
     const markdown = renderReportMarkdown(report);
+    const [pack] = report.fixPacks;
+    expect(pack).toBeDefined();
 
     expect(markdown.indexOf("## Agent Fix Packs")).toBeGreaterThanOrEqual(0);
     expect(markdown.indexOf("## Agent Fix Packs")).toBeLessThan(
       markdown.indexOf("## Prioritized Issues"),
     );
-    expect(markdown).toContain("### Fix Pack 1:");
-    expect(markdown).toContain("- Source issues:");
-    expect(markdown).toContain("- Repository search hints:");
-    expect(markdown).toContain("- Implementation steps:");
+    expect(markdown).toContain(`### Fix Pack 1: ${pack?.goal}`);
+    expect(markdown).toContain(`- Severity: **${pack?.severity}**`);
+    expect(markdown).toContain(`- Category: ${pack?.category}`);
     expect(markdown).toContain(
-      "- Verification: rerun this tool in `reliable` mode",
+      `- Affected profiles: ${pack?.affectedProfiles.join(", ")}`,
+    );
+    expect(markdown).toContain(
+      `- Source issues: \`${pack?.sourceIssueIds[0]}\``,
+    );
+    expect(markdown).toContain("- Repository search hints:");
+    expect(markdown).toContain(`  - ${pack?.repoSearchHints[0]}`);
+    expect(markdown).toContain("- Implementation steps:");
+    expect(markdown).toContain(`  - ${pack?.implementationSteps[0]}`);
+    expect(markdown).toContain(`  - ${pack?.acceptanceCriteria[0]}`);
+    expect(markdown).toContain(
+      `- Verification: rerun this tool in \`${pack?.verification.rerunMode}\` mode; expected audit IDs: \`${pack?.verification.expectedAuditIds[0]}\``,
     );
   });
 
