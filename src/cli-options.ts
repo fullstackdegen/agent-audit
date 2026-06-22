@@ -5,7 +5,7 @@ export type CliOptionsResult =
   | { action: "help"; text: string }
   | { action: "error"; text: string };
 
-const HELP_TEXT = `Usage: mcp-server-lighthouse [options]
+const HELP_TEXT = `Usage: agent-audit [options]
 
 Options:
   --local        Allow localhost and loopback audits for local development.

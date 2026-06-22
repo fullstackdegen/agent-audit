@@ -22,6 +22,8 @@ describe("CLI options", () => {
     const result = parseCliOptions(["--help"], env);
 
     expect(result).toEqual({ action: "help", text: formatCliHelp() });
+    expect(result.text).toContain("Usage: agent-audit [options]");
+    expect(result.text).not.toContain("mcp-server-lighthouse");
     expect(env).toEqual({});
   });
 
