@@ -47,8 +47,8 @@ describe("Lighthouse MCP server", () => {
     const client = await connectTestClient();
 
     expect(client.getServerVersion()).toEqual({
-      name: "mcp-server-lighthouse",
-      version: "0.2.0",
+      name: "agent-audit",
+      version: "0.3.0",
     });
   });
 

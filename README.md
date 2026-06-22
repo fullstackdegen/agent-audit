@@ -1,24 +1,24 @@
-# Lighthouse MCP
+# Agent Audit
 
-## Turn Lighthouse audits into coding-agent tasks.
+## Turn Lighthouse audits into coding-agent fix packs.
 
 Run repeatable mobile and desktop Lighthouse audits from any compatible MCP
 client. Receive a bounded implementation backlog with evidence, suggested
 actions, and measurable acceptance criteria as structured JSON and Markdown.
 
 ```bash
-npx -y mcp-server-lighthouse
+npx -y agent-audit
 ```
 
-![Lighthouse MCP converts raw audits into an agent-ready backlog](docs/assets/lighthouse-mcp-overview.svg)
+![Agent Audit converts raw Lighthouse audits into an agent-ready backlog](docs/assets/lighthouse-mcp-overview.svg)
 
-## Why Lighthouse MCP?
+## Why Agent Audit?
 
 Raw Lighthouse output is designed for diagnostics, not autonomous
 implementation. It contains metrics, audit details, overlapping insights, and
 page-controlled text that a coding agent still needs to interpret.
 
-Lighthouse MCP turns that output into a stable workflow:
+Agent Audit turns that output into a stable workflow:
 
 1. Run Lighthouse for mobile and desktop.
 2. Aggregate repeated runs and expose variability.
@@ -54,7 +54,7 @@ The package is an MCP server distributed through npm. Your MCP client starts it
 as a local stdio process:
 
 ```bash
-npx -y mcp-server-lighthouse
+npx -y agent-audit
 ```
 
 Future releases can be published through the GitHub Actions release workflow
@@ -67,9 +67,9 @@ Open Claude Desktop's developer configuration and add:
 ```json
 {
   "mcpServers": {
-    "lighthouse": {
+    "agent-audit": {
       "command": "npx",
-      "args": ["-y", "mcp-server-lighthouse"]
+      "args": ["-y", "agent-audit"]
     }
   }
 }
@@ -83,13 +83,13 @@ Restart Claude Desktop after saving the configuration. See the
 Add the server with the Claude Code CLI:
 
 ```bash
-claude mcp add lighthouse -- npx -y mcp-server-lighthouse
+claude mcp add agent-audit -- npx -y agent-audit
 ```
 
 For local development audits, pass the explicit localhost opt-in:
 
 ```bash
-claude mcp add lighthouse-local -- npx -y mcp-server-lighthouse --local
+claude mcp add agent-audit-local -- npx -y agent-audit --local
 ```
 
 See the [official Claude Code MCP documentation](https://code.claude.com/docs/en/mcp).
@@ -99,15 +99,15 @@ See the [official Claude Code MCP documentation](https://code.claude.com/docs/en
 Add the server with the Codex CLI:
 
 ```bash
-codex mcp add lighthouse -- npx -y mcp-server-lighthouse
+codex mcp add agent-audit -- npx -y agent-audit
 ```
 
 Or add it to `~/.codex/config.toml`:
 
 ```toml
-[mcp_servers.lighthouse]
+[mcp_servers.agent-audit]
 command = "npx"
-args = ["-y", "mcp-server-lighthouse"]
+args = ["-y", "agent-audit"]
 ```
 
 See the [official Codex MCP documentation](https://developers.openai.com/codex/mcp).
@@ -119,9 +119,9 @@ Create a workspace or user-level `.mcp.json` file with:
 ```json
 {
   "servers": {
-    "lighthouse": {
+    "agent-audit": {
       "command": "npx",
-      "args": ["-y", "mcp-server-lighthouse"]
+      "args": ["-y", "agent-audit"]
     }
   }
 }
@@ -130,7 +130,7 @@ Create a workspace or user-level `.mcp.json` file with:
 You can also register the server from a terminal:
 
 ```bash
-code --add-mcp '{"name":"lighthouse","command":"npx","args":["-y","mcp-server-lighthouse"]}'
+code --add-mcp '{"name":"agent-audit","command":"npx","args":["-y","agent-audit"]}'
 ```
 
 See the [official VS Code MCP server documentation](https://code.visualstudio.com/docs/agent-customization/mcp-servers).
@@ -139,9 +139,9 @@ See the [official VS Code MCP server documentation](https://code.visualstudio.co
 
 Configure a local stdio MCP server:
 
-- name: `lighthouse`
+- name: `agent-audit`
 - command: `npx`
-- arguments: `-y`, `mcp-server-lighthouse`
+- arguments: `-y`, `agent-audit`
 
 If your Cursor version supports environment variables for MCP servers, add
 `--local` to the server arguments when you need localhost audits.
@@ -152,17 +152,17 @@ For clients that accept the standard `mcpServers` JSON shape, use the Claude
 Desktop configuration above. Otherwise configure a local stdio server with:
 
 - command: `npx`
-- arguments: `-y`, `mcp-server-lighthouse`
+- arguments: `-y`, `agent-audit`
 
 ## Localhost And Private Targets
 
-By default, Lighthouse MCP only accepts publicly routable HTTP and HTTPS URLs.
+By default, Agent Audit only accepts publicly routable HTTP and HTTPS URLs.
 This is the correct default for hosted agents and shared environments.
 
 For developer machines, enable explicit localhost auditing:
 
 ```bash
-npx -y mcp-server-lighthouse --local
+npx -y agent-audit --local
 ```
 
 Then audit the local app through your MCP client:
@@ -183,7 +183,7 @@ The environment variable form remains supported for clients that cannot pass
 extra CLI arguments:
 
 ```bash
-LIGHTHOUSE_MCP_ALLOW_LOCALHOST=true npx -y mcp-server-lighthouse
+LIGHTHOUSE_MCP_ALLOW_LOCALHOST=true npx -y agent-audit
 ```
 
 ## Tool
@@ -306,7 +306,7 @@ virtual machine provides an equivalent isolation boundary.
 **The target URL is rejected**
 
 Only publicly routable HTTP and HTTPS targets are accepted by default. For a
-local development server, start Lighthouse MCP with `--local` and use a
+local development server, start Agent Audit with `--local` and use a
 loopback URL such as `http://localhost:3000`. Private network addresses remain
 blocked.
 

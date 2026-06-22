@@ -1,10 +1,10 @@
 {
-  "name": "mcp-server-lighthouse",
-  "version": "0.2.0",
-  "description": "Turn mobile and desktop Lighthouse audits into evidence-backed coding-agent tasks.",
+  "name": "agent-audit",
+  "version": "0.3.0",
+  "description": "Turn Lighthouse audits into coding-agent fix packs.",
   "type": "module",
   "bin": {
-    "mcp-server-lighthouse": "dist/index.js"
+    "agent-audit": "dist/index.js"
   },
   "files": [
     "dist",
@@ -25,7 +25,9 @@
   "keywords": [
     "mcp",
     "model-context-protocol",
+    "agent-audit",
     "lighthouse",
+    "fix-packs",
     "coding-agent",
     "ai-agent",
     "core-web-vitals",

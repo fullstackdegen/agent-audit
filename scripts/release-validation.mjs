@@ -14,6 +14,18 @@ export function validateReleaseSurface({
   };
 
   requireValue(
+    packageJson.name === "agent-audit",
+    "package.json name must be agent-audit",
+  );
+  requireValue(
+    packageJson.bin?.["agent-audit"] === "dist/index.js",
+    "package.json must expose the agent-audit binary",
+  );
+  requireValue(
+    packageJson.description === "Turn Lighthouse audits into coding-agent fix packs.",
+    "package.json description must match the product promise",
+  );
+  requireValue(
     packageJson.repository?.url,
     "package.json repository.url is required",
   );
@@ -24,7 +36,7 @@ export function validateReleaseSurface({
     "prepublishOnly must run every release gate",
   );
   requireValue(
-    readme.includes("Turn Lighthouse audits into coding-agent tasks."),
+    readme.includes("Turn Lighthouse audits into coding-agent fix packs."),
     "README must contain the product promise",
   );
   requireValue(

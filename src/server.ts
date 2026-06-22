@@ -24,10 +24,10 @@ export interface LighthouseServerDependencies {
 }
 
 const TOOL_NAME = "analyze_website_performance";
-const SERVER_VERSION = "0.2.0";
+const SERVER_VERSION = "0.3.0";
 
 /**
- * Creates the Lighthouse MCP server and its schema-validated tool contract.
+ * Creates the Agent Audit MCP server and its schema-validated tool contract.
  */
 export function createLighthouseServer(
   dependencies: LighthouseServerDependencies = {},
@@ -36,7 +36,7 @@ export function createLighthouseServer(
   const validateUrl = dependencies.validateUrl ?? assertPublicHttpUrl;
   const server = new Server(
     {
-      name: "mcp-server-lighthouse",
+      name: "agent-audit",
       version: SERVER_VERSION,
     },
     {

@@ -1,6 +1,6 @@
 # Contributing
 
-Contributions are welcome through focused issues and pull requests.
+Agent Audit contributions are welcome through focused issues and pull requests.
 
 ## Development Setup
 
